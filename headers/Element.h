@@ -9,20 +9,20 @@ class Element {
         std::string code;
     public:
         Element(int id, std::string code);
-        int getId();
-        std::string getCode();
+        int getId() const;
+        std::string getCode() const;
+        virtual
 };
 
 Element::Element(int id, std::string code)
     : id(id), code(code) {}
 
-std::string Element::getCode() {
+std::string Element::getCode() const {
     return code;
 }
 
-int Element::getId() {
+int Element::getId() const {
     return id;
 }
-
 
 #endif //FIRST_PROJECT_DA_ELEMENT_H

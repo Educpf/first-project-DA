@@ -3,7 +3,9 @@ project(first_project_DA)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(first_project_DA main.cpp
+add_executable(first_project_DA
+        src/main.cpp
+        src/managerLoad.cpp
         headers/Graph.h
         headers/MutablePriorityQueue.h
         headers/Reservoir.h
