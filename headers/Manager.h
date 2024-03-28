@@ -15,6 +15,7 @@ class Manager {
         unordered_map<string, Reservoir *> reservoirs;
         unordered_map<string, Station *> stations;
         unordered_map<string, City *> cities;
+		unordered_map<string, Element *> allElements;
 
     public:
         // Loaders

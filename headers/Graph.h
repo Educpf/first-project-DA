@@ -6,7 +6,7 @@
 #include <queue>
 #include <limits>
 #include <algorithm>
-#include <unordered_map>
+#include <unordered_set>
 #include "Element.h"
 #include "MutablePriorityQueue.h"
 
@@ -102,8 +102,10 @@ public:
 
     int getNumVertex() const;
     std::vector<Vertex *> getVertexSet() const;
+	std::unordered_set<Vertex *> getVertexUnorderedSet() const;
 protected:
     std::vector<Vertex *> vertexSet;
+	std::unordered_set<Vertex *> vertexUnorderedSet;
 
     double ** distMatrix = nullptr;
     int **pathMatrix = nullptr;
@@ -289,6 +291,10 @@ std::vector<Vertex *> Graph::getVertexSet() const {
     return vertexSet;
 }
 
+std::unordered_set<Vertex *> Graph::getVertexUnorderedSet() const {
+    return vertexUnorderedSet;
+}
+
 /*
  * Auxiliary function to find a vertex with a given content.
  */
@@ -315,7 +321,9 @@ int Graph::findVertexIdx(const Element *in) const {
 bool Graph::addVertex(Element *in) {
     if (findVertex(in) != nullptr)
         return false;
-    vertexSet.push_back(new Vertex(in));
+	Vertex *vtx = new Vertex(in);
+	vertexUnorderedSet.insert(vtx);
+    vertexSet.push_back(vtx);
     return true;
 }
 
@@ -332,6 +340,7 @@ bool Graph::removeVertex(Element *in) {
             for (auto u : vertexSet) {
                 u->removeEdge(v->getInfo());
             }
+			vertexUnorderedSet.erase(v);
             vertexSet.erase(it);
             delete v;
             return true;
