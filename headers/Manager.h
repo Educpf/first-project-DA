@@ -1,7 +1,3 @@
-//
-// Created by gabri on 19/03/2024.
-//
-
 #ifndef FIRST_PROJECT_DA_MANAGER_H
 #define FIRST_PROJECT_DA_MANAGER_H
 
@@ -10,9 +6,16 @@
 #include "Reservoir.h"
 #include "Station.h"
 
+#include <unordered_map>
+using namespace std;
+
 class Manager {
     private:
         Graph<Element> network;
+        unordered_map<string, Reservoir*> reservoirs;
+        unordered_map<string, Station*> stations;
+        unordered_map<string, City*> cities;
+
     public:
         // Loaders
         void loadReservoirs();

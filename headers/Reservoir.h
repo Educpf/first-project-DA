@@ -8,16 +8,14 @@ class Reservoir : public Element {
     private:
         std::string name;
         std::string municipality;
-public:
-    std::string getName() const;
-    std::string getMunicipality() const;
-    int getMaxDelivery() const;
-
-private:
-    int maxDelivery = 0;
+        int maxDelivery = 0;
     public:
         Reservoir(int id, std::string code, std::string name, std::string municipality, int maxDelivery);
+        std::string getName() const;
+        std::string getMunicipality() const;
+        int getMaxDelivery() const;
 };
+
 
 Reservoir::Reservoir(int id, std::string code, std::string name, std::string municipality, int maxDelivery)
     : Element(id, code), name(name), municipality(municipality), maxDelivery(maxDelivery) {}
