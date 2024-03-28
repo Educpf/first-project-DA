@@ -11,10 +11,10 @@ using namespace std;
 
 class Manager {
     private:
-        Graph<Element> network;
-        unordered_map<string, Reservoir*> reservoirs;
-        unordered_map<string, Station*> stations;
-        unordered_map<string, City*> cities;
+        Graph network;
+        unordered_map<string, Reservoir *> reservoirs;
+        unordered_map<string, Station *> stations;
+        unordered_map<string, City *> cities;
 
     public:
         // Loaders
