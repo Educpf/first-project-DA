@@ -15,7 +15,7 @@ void Manager::CalculateMaxFlow(){
     network.addVertex(superSink);
 
     for (const auto& [code, sink]  : cities){
-        network.addEdge(sink, superSink, numeric_limits<double>::max());
+        network.addEdge(sink, superSink, sink->getDemand());
     }
 
     EdmondsKarp(superSource, superSink);
