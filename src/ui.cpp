@@ -10,9 +10,9 @@ UI::UI() : manager(Manager())
 {
 	auto start = std::chrono::high_resolution_clock::now();
     manager.loadCities();
-	manager.loadPipes();
 	manager.loadReservoirs();
 	manager.loadStations();
+	manager.loadPipes();
 	auto end = std::chrono::high_resolution_clock::now();
 	loadtime = std::chrono::duration<double>(end - start).count();
 	mainMenu();
