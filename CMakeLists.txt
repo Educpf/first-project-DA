@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(first_project_DA
         src/ui.cpp
         src/managerLoad.cpp
+        src/managerWork.cpp
 )

@@ -31,8 +31,12 @@ class Manager {
         unordered_map<string, City *> getCities();
 		unordered_map<string, Element *> getAllElements();
         // Basic Service Metrics
-
+        void CalculateMaxFlow();
         // Reliability
+    
+    private:
+        void EdmondsKarp(Element* source, Element* target);
+        double EdmondsBFS(Vertex* source, Vertex* target);
 };
 
 inline Graph Manager::getNetwork() {
