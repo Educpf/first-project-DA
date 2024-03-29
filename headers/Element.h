@@ -11,7 +11,6 @@ class Element {
         Element(int id, std::string code);
         int getId() const;
         std::string getCode() const;
-        virtual
 };
 
 Element::Element(int id, std::string code)

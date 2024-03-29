@@ -16,7 +16,6 @@ class Reservoir : public Element {
         int getMaxDelivery() const;
 };
 
-
 Reservoir::Reservoir(int id, std::string code, std::string name, std::string municipality, int maxDelivery)
     : Element(id, code), name(name), municipality(municipality), maxDelivery(maxDelivery) {}
 

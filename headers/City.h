@@ -31,6 +31,4 @@ std::string City::getName() const {
 City::City(int id, std::string code, std::string name, int demand, int population)
 : Element(id, code), name(name), demand(demand), population(population) {}
 
-std::string
-
 #endif //FIRST_PROJECT_DA_CITY_H
