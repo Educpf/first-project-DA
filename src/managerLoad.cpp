@@ -92,6 +92,7 @@ void Manager::loadCities()
             auto city = new City(stoi(id),code, name, stoi(demand), stoi(population));
 
             cities[code] = city;
+			allElements[code] = city;
             network.addVertex(city);
         }
     }

@@ -24,10 +24,36 @@ class Manager {
         void loadCities();
         void loadPipes();
 
+		// Getters
+		Graph getNetwork();
+		unordered_map<string, Reservoir *> getReservoirs();
+		unordered_map<string, Station *> getStations();
+        unordered_map<string, City *> getCities();
+		unordered_map<string, Element *> getAllElements();
         // Basic Service Metrics
 
         // Reliability
 };
+
+inline Graph Manager::getNetwork() {
+	return network;
+}
+
+inline unordered_map<string, Reservoir *> Manager::getReservoirs() {
+	return reservoirs;
+}
+
+inline unordered_map<string, Station *> Manager::getStations() {
+	return stations;
+}
+
+inline unordered_map<string, City *> Manager::getCities() {
+	return cities;
+}
+
+inline unordered_map<string, Element *> Manager::getAllElements() {
+	return allElements;
+}
 
 
 #endif //FIRST_PROJECT_DA_MANAGER_H
