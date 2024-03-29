@@ -16,20 +16,19 @@ class Reservoir : public Element {
         int getMaxDelivery() const;
 };
 
-Reservoir::Reservoir(int id, std::string code, std::string name, std::string municipality, int maxDelivery)
+inline Reservoir::Reservoir(int id, std::string code, std::string name, std::string municipality, int maxDelivery)
     : Element(id, code), name(name), municipality(municipality), maxDelivery(maxDelivery) {}
 
-std::string Reservoir::getName() const {
+inline std::string Reservoir::getName() const {
     return name;
 }
 
-std::string Reservoir::getMunicipality() const {
+inline std::string Reservoir::getMunicipality() const {
     return municipality;
 }
 
-int Reservoir::getMaxDelivery() const {
+inline int Reservoir::getMaxDelivery() const {
     return maxDelivery;
 }
-
 
 #endif //FIRST_PROJECT_DA_RESERVOIR_H

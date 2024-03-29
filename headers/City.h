@@ -16,19 +16,19 @@ class City : public Element {
         std::string getName() const;
 };
 
-int City::getDemand() const {
+inline int City::getDemand() const {
     return demand;
 }
 
-int City::getPopulation() const {
+inline int City::getPopulation() const {
     return population;
 }
 
-std::string City::getName() const {
+inline std::string City::getName() const {
     return name;
 }
 
-City::City(int id, std::string code, std::string name, int demand, int population)
+inline City::City(int id, std::string code, std::string name, int demand, int population)
 : Element(id, code), name(name), demand(demand), population(population) {}
 
 #endif //FIRST_PROJECT_DA_CITY_H

@@ -13,14 +13,14 @@ class Element {
         std::string getCode() const;
 };
 
-Element::Element(int id, std::string code)
+inline Element::Element(int id, std::string code)
     : id(id), code(code) {}
 
-std::string Element::getCode() const {
+inline std::string Element::getCode() const {
     return code;
 }
 
-int Element::getId() const {
+inline int Element::getId() const {
     return id;
 }
 
