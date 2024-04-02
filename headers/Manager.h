@@ -5,6 +5,8 @@
 #include "City.h"
 #include "Reservoir.h"
 #include "Station.h"
+#include <list>
+#include <tuple>
 
 #include <unordered_map>
 using namespace std;
@@ -31,12 +33,14 @@ class Manager {
         unordered_map<string, City *> getCities();
 		unordered_map<string, Element *> getAllElements();
         // Basic Service Metrics
-        void CalculateMaxFlow();
+        double CalculateMaxFlow();
+        void balanceNetwork();
         // Reliability
+        void removeReservoir(Reservoir* reservoir);
     
     private:
-        void EdmondsKarp(Element* source, Element* target);
-        double EdmondsBFS(Vertex* source, Vertex* target);
+        void EdmondsKarp(Element* source, Element* target, const unordered_set<Vertex*>& affected);
+        double EdmondsBFS(Vertex* source, Vertex* target, const unordered_set<Vertex*>& affected);
 };
 
 inline Graph Manager::getNetwork() {

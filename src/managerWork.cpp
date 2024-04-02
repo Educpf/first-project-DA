@@ -1,7 +1,8 @@
 #include "../headers/Manager.h"
 #include <limits.h>
+#include <list>
 
-void Manager::CalculateMaxFlow(){
+double Manager::CalculateMaxFlow(){
     // Add super source
     Element* superSource = new Element(0, "SS");
     network.addVertex(superSource);
@@ -18,34 +19,7 @@ void Manager::CalculateMaxFlow(){
         network.addEdge(sink, superSink, sink->getDemand());
     }
 
-    EdmondsKarp(superSource, superSink);
-
-
-    // Clean network
-    double total = 0;
-    Vertex* superSinkVertex = network.findVertex(superSink);
-    for (Edge* e : superSinkVertex->getIncoming()){
-        total+=e->getFlow();
-    }
-
-    std::cout << "Max flow obtained was: " << total << std::endl;
-
-    network.removeVertex(superSource);
-    network.removeVertex(superSink);
-    delete superSink;
-    delete superSource;
-
-    
-
-}
-
-void Manager::EdmondsKarp(Element* source, Element* target){
-
-    double new_flow;
-
-    auto sc = network.findVertex(source);
-    auto tg = network.findVertex(target);
-
+    // Clean graph
     for (Vertex* v : network.getVertexSet()){
         for (Edge* e : v->getAdj()){
             e->setFlow(0);
@@ -53,13 +27,47 @@ void Manager::EdmondsKarp(Element* source, Element* target){
         v->setPath(nullptr);
     }
 
+    unordered_set<Vertex*> coiso;
+    for (auto e : allElements){
+        coiso.insert(network.findVertex(e.second));
+    }
+    coiso.insert(network.findVertex(superSource));
+    coiso.insert(network.findVertex(superSink));
 
-    while ((new_flow = EdmondsBFS(sc, tg))){
+    EdmondsKarp(superSource, superSink, coiso);
+
+
+
+    double total = 0;
+    Vertex* superSinkVertex = network.findVertex(superSink);
+    for (Edge* e : superSinkVertex->getIncoming()){
+        total+=e->getFlow();
+    }
+
+    // Just to check result 
+    std::cout << "Max flow obtained was: " << total << std::endl;
+
+    // Clean graph
+    network.removeVertex(superSource);
+    network.removeVertex(superSink);
+    delete superSink;
+    delete superSource;
+
+    return total;
+}
+
+void Manager::EdmondsKarp(Element* source, Element* target, const unordered_set<Vertex*>& affected){
+
+    double new_flow;
+
+    auto sc = network.findVertex(source);
+    auto tg = network.findVertex(target);
+
+    while ((new_flow = EdmondsBFS(sc, tg, affected))){
         Vertex* node = tg;
         while (node != sc){
             Vertex* next;
             Edge* e = node->getPath();
-            node->setPath(nullptr);
             if (e->getDest() == node){
                 next = e->getOrig();
                 e->setFlow(e->getFlow() + new_flow);
@@ -72,7 +80,7 @@ void Manager::EdmondsKarp(Element* source, Element* target){
     }
 }
 
-double Manager::EdmondsBFS(Vertex* source, Vertex* target){
+double Manager::EdmondsBFS(Vertex* source, Vertex* target, const unordered_set<Vertex*>& affected){
 
 
     std::queue<std::pair<Vertex*, double>> q;
@@ -89,6 +97,7 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target){
 
         for (Edge* e : v->getAdj()){
             Vertex* d = e->getDest();
+            if (affected.find(d) == affected.end()) continue;
             Edge* reverseEdge = e->getReverse();
             if ((d->getPath()== nullptr) && (e->getFlow() < e->getWeight()) && (reverseEdge ? reverseEdge->getFlow()==0:true)){
                 d->setPath(e);
@@ -99,6 +108,7 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target){
         }
         for (Edge* e : v->getIncoming()){
             Vertex* o = e->getOrig();
+            if (affected.find(o) == affected.end()) continue;
             if ((o->getPath()== nullptr) && (e->getFlow() > 0)){
                 o->setPath(e);
                 double new_flow = std::min(flow, e->getFlow());
