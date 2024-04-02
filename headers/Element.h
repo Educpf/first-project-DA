@@ -10,7 +10,7 @@ class Element {
     public:
         Element(int id, std::string code);
         int getId() const;
-        std::string getCode() const;
+        virtual std::string getCode() const;
 };
 
 inline Element::Element(int id, std::string code)
