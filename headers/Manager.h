@@ -19,6 +19,11 @@ class Manager {
         unordered_map<string, City *> cities;
 		unordered_map<string, Element *> allElements;
 
+        unordered_map<string,int> maxflows;
+        unordered_map<string,int> deficitcities;
+        unordered_map<string,unordered_map<string,int>> rmPS;
+        unordered_map<string,unordered_map<string,int>> rmPipelines;
+
     public:
         // Loaders
         void loadReservoirs();
@@ -32,11 +37,21 @@ class Manager {
 		unordered_map<string, Station *> getStations();
         unordered_map<string, City *> getCities();
 		unordered_map<string, Element *> getAllElements();
+
+
         // Basic Service Metrics
         double CalculateMaxFlow();
+        void maxflowcities();
+        void citiesindeficit();
         void balanceNetwork();
+
+
         // Reliability
         void removeReservoir(Reservoir* reservoir);
+        void maintenancePS();
+        void maintenancePipes();
+
+
     
     private:
         void EdmondsKarp(Element* source, Element* target, const unordered_set<Vertex*>& affected);

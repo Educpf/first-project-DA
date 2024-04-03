@@ -45,7 +45,7 @@ double Manager::CalculateMaxFlow(){
     }
 
     // Just to check result 
-    std::cout << "Max flow obtained was: " << total << std::endl;
+   // std::cout << "Max flow obtained was: " << total << std::endl;
 
     // Clean graph
     network.removeVertex(superSource);
@@ -118,4 +118,39 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target, const unordered_set<V
         }
     }
     return 0;
+}
+
+
+
+void Manager::maxflowcities(){ 
+     CalculateMaxFlow();
+     for(const auto& [code,city] : this->cities){
+         int flow = 0;
+        for(auto incoming : network.findVertex(city)->getIncoming()){
+             flow += incoming->getFlow();
+        }
+        maxflows[code] = flow;
+    }
+    /**
+    for(auto k : this->maxflows){
+        cout << k.first << "          " << k.second <<endl;
+    }
+
+     cout<<"\n\n\n";
+     */
+}
+
+
+void Manager::citiesindeficit() { 
+    unordered_map<string,int> result;
+    for(const auto& [code,city] : this->cities){
+        int maxflowcity = maxflows[code];
+        if(maxflowcity < city->getDemand()) deficitcities[code] = city->getDemand()-maxflowcity;
+    }
+    /**
+    for(auto k : this->deficitcities){
+        cout<< k.first << "    " << k.second<< endl;
+    }
+        cout<<"\n\n\n";
+        */
 }

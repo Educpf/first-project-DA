@@ -162,3 +162,120 @@ void Manager::removeReservoir(Reservoir* reservoir){
     delete superSink;
     delete superSource;
 }
+
+
+
+
+void Manager::maintenancePS(){
+    int n = 0;
+    for(const auto& [stationCode,station] : this->stations){
+        unordered_map<string,int> flowswithoutps;
+        unordered_map<Element*,double> outgoing, incoming;
+
+        auto networkStation = network.findVertex(station);
+
+        for(auto outedge : networkStation->getAdj()){
+            outgoing[outedge->getDest()->getInfo()] = outedge->getWeight();
+        }
+
+        for(auto inedge : networkStation->getIncoming()){
+            incoming[inedge->getOrig()->getInfo()] = inedge->getWeight();
+        }
+
+        network.removeVertex(station);
+        // cout << n++ << ": ";
+        CalculateMaxFlow();  //edmonds
+        for(const auto& [cityCode,city] : this->cities){
+            int flow = 0;
+            for(auto incoming : network.findVertex(city)->getIncoming()){
+                flow += incoming->getFlow();
+            }
+            flowswithoutps[cityCode] = flow;
+        }
+        unordered_map<string,int> affectedcities;
+        for(const auto& [cityCode,city] : this->cities){
+            if(flowswithoutps[cityCode] < maxflows[cityCode]){
+                affectedcities[cityCode] = flowswithoutps[cityCode]-maxflows[cityCode];
+            }
+        }
+        if(!affectedcities.empty()){
+            rmPS[stationCode] = affectedcities;
+        }
+        
+
+        network.addVertex(station);
+
+        for(const auto& [v,w] : outgoing){
+            if(incoming.find(v) != incoming.end()){
+                network.addBidirectionalEdge(v,station,w);
+                incoming.erase(v);
+            }
+            else network.addEdge(station,v,w);
+        }
+        for(const auto& [v,w] : incoming){
+            network.addEdge(v,station,w);
+        }
+    }
+    /**
+    for(auto k : rmPS){
+        cout << k.first << ": " << k.second.size() <<endl;
+        for(auto n : k.second){
+            cout << n.first << "  " << n.second << endl;
+        }
+    }
+    cout<<rmPS.size();
+    */
+}
+
+
+
+void Manager::maintenancePipes(){
+    int n = 0;
+    for(auto element : network.getVertexSet()){
+        for(auto edge : element->getAdj()){
+            Element* orig = edge->getOrig()->getInfo();
+            Element* dest = edge->getDest()->getInfo();
+            double w = edge->getWeight();
+            network.removeEdge(edge->getOrig()->getInfo(),edge->getDest()->getInfo());
+        
+            unordered_map<string,int> flowswithoutpipe;
+            unordered_map<Element*,double> incoming;
+
+            // cout << n++ << ": ";
+            CalculateMaxFlow();  //edmonds
+            for(const auto& [cityCode,city] : this->cities){
+                int flow = 0;
+                for(auto incoming : network.findVertex(city)->getIncoming()){
+                    flow += incoming->getFlow();
+                }
+                flowswithoutpipe[cityCode] = flow;
+            }
+            unordered_map<string,int> affectedcities;
+            for(const auto& [cityCode,city] : this->cities){
+                if(flowswithoutpipe[cityCode] < maxflows[cityCode]){
+                    affectedcities[cityCode] = flowswithoutpipe[cityCode]-maxflows[cityCode];
+                }
+            }
+
+            if(!affectedcities.empty()){
+                string code = orig->getCode() + " --- " + dest->getCode();
+                rmPipelines[code] = affectedcities;
+            }
+
+            network.addEdge(orig,dest,w);
+
+        }
+    }
+    /**
+    for(auto k : rmPipelines){
+        cout << k.first << k.second.size() <<endl;
+        for(auto n : k.second){
+            cout << n.first << "  " << n.second << endl;
+        }
+    }
+    cout<<rmPipelines.size();
+    */
+}
+
+    
+

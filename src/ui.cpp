@@ -13,9 +13,16 @@ UI::UI() : manager(Manager())
 	manager.loadReservoirs();
 	manager.loadStations();
 	manager.loadPipes();
+
+	manager.maxflowcities();
+	manager.citiesindeficit();
+	manager.maintenancePS();
+	manager.maintenancePipes();
+
+
 	auto end = std::chrono::high_resolution_clock::now();
 	loadtime = std::chrono::duration<double>(end - start).count();
-	mainMenu();
+	// mainMenu();
 }
 
 void UI::mainMenu()
