@@ -5,7 +5,7 @@ using namespace std;
 
 void Manager::loadReservoirs()
 {
-    std::ifstream file("../dataset/Reservoir.csv");
+    std::ifstream file(useSmallSet ? "../dataset/small/Reservoirs_Madeira.csv" : "../dataset/Reservoir.csv");
 
     if(!file.is_open())
 	{
@@ -38,7 +38,7 @@ void Manager::loadReservoirs()
 
 void Manager::loadStations()
 {
-    std::ifstream file("../dataset/Stations.csv");
+    std::ifstream file(useSmallSet ? "../dataset/small/Stations_Madeira.csv" : "../dataset/Stations.csv");
 
     if(!file.is_open())
 	{
@@ -68,7 +68,7 @@ void Manager::loadStations()
 
 void Manager::loadCities()
 {
-    std::ifstream file("../dataset/Cities.csv");
+    std::ifstream file(useSmallSet ? "../dataset/small/Cities_Madeira.csv" : "../dataset/Cities.csv");
 
     if(!file.is_open())
 	{
@@ -102,7 +102,7 @@ void Manager::loadCities()
 
 void Manager::loadPipes()
 {
-    std::ifstream file("../dataset/Pipes.csv");
+    std::ifstream file(useSmallSet ? "../dataset/small/Pipes_Madeira.csv" : "../dataset/Pipes.csv");
 
     if(!file.is_open())
 	{

@@ -24,6 +24,8 @@ std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
 	for (auto vtx : graph.getVertexSet())
 	{
 		Element *elem = vtx->getInfo();
+		if (dynamic_cast<Reservoir *>(elem) != nullptr)
+			continue;
 		if (strFind(elem->getCode(), searchTerm))
 		{
 			result.push_back(vtx);
@@ -33,16 +35,6 @@ std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
 		if (city != nullptr)
 		{
 			if (strFind(city->getName(), searchTerm))
-			{
-				result.push_back(vtx);
-				continue;
-			}
-		}
-		Reservoir *reserv = dynamic_cast<Reservoir *>(elem);
-		if (reserv != nullptr)
-		{
-			if (strFind(reserv->getMunicipality(), searchTerm) 
-				|| strFind(reserv->getName(), searchTerm))
 			{
 				result.push_back(vtx);
 				continue;
@@ -64,7 +56,13 @@ void UI::maxFlowMenu()
 {
 	int totalFlow = manager.CalculateMaxFlow();
 	Graph graph = manager.getNetwork();
-	std::vector<Vertex *> lst = graph.getVertexSet();
+	std::vector<Vertex *> lst;
+	for (Vertex *vtx : graph.getVertexSet())
+	{
+		if (dynamic_cast<Reservoir *>(vtx->getInfo()) != nullptr)
+			continue;
+		lst.push_back(vtx);
+	}
 	size_t count = 0;
 	std::string str;
 	int totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;

@@ -15,7 +15,7 @@ class UI {
 		long loadtime;
 		Manager manager;
 	public:
-		UI();
+		UI(bool useSmallSet);
 		void mainMenu();
 		void maxFlowMenu();
 		void testMenu();

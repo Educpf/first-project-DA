@@ -1,12 +1,13 @@
 #include "../headers/Ui.h"
 
-int main()
+int main(int argc, char **argv)
 {
-    UI();
+	(void)argv;
+    UI(argc > 1);
     return 0;
 }
 
-UI::UI() : manager(Manager())
+UI::UI(bool useSmallSet) : manager(Manager(useSmallSet))
 {
 	auto start = std::chrono::high_resolution_clock::now();
     manager.loadCities();

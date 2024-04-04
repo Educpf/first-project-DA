@@ -12,6 +12,7 @@
 
 class Manager {
     private:
+		bool useSmallSet;
         Graph network;
         std::unordered_map<std::string, Reservoir *> reservoirs;
         std::unordered_map<std::string, Station *> stations;
@@ -19,6 +20,7 @@ class Manager {
 		std::unordered_map<std::string, Element *> allElements;
 
     public:
+		inline Manager(bool useSmallSet) : useSmallSet(useSmallSet) {};
         // Loaders
         void loadReservoirs();
         void loadStations();
