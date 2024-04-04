@@ -4,7 +4,7 @@
 
 void Manager::loadReservoirs()
 {
-    std::ifstream file("../dataset/Reservoir.csv");
+    std::ifstream file("../datasetSmall/Reservoirs_Madeira.csv");
 
     if(!file.is_open())
 	{
@@ -37,7 +37,7 @@ void Manager::loadReservoirs()
 
 void Manager::loadStations()
 {
-    std::ifstream file("../dataset/Stations.csv");
+    std::ifstream file("../datasetSmall/Stations_Madeira.csv");
 
     if(!file.is_open())
 	{
@@ -67,7 +67,7 @@ void Manager::loadStations()
 
 void Manager::loadCities()
 {
-    std::ifstream file("../dataset/Cities.csv");
+    std::ifstream file("../datasetSmall/Cities_Madeira.csv");
 
     if(!file.is_open())
 	{
@@ -101,7 +101,7 @@ void Manager::loadCities()
 
 void Manager::loadPipes()
 {
-    std::ifstream file("../dataset/Pipes.csv");
+    std::ifstream file("../datasetSmall/Pipes_Madeira.csv");
 
     if(!file.is_open())
 	{

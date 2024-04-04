@@ -45,7 +45,7 @@ double Manager::CalculateMaxFlow(){
     }
 
     // Just to check result 
-   // std::cout << "Max flow obtained was: " << total << std::endl;
+    std::cout << "Max flow obtained was: " << total << std::endl;
 
     // Clean graph
     network.removeVertex(superSource);

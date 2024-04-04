@@ -187,8 +187,8 @@ void Manager::maintenancePS(){
         CalculateMaxFlow();  //edmonds
         for(const auto& [cityCode,city] : this->cities){
             int flow = 0;
-            for(auto incoming : network.findVertex(city)->getIncoming()){
-                flow += incoming->getFlow();
+            for(auto in : network.findVertex(city)->getIncoming()){
+                flow += in->getFlow();
             }
             flowswithoutps[cityCode] = flow;
         }
@@ -236,12 +236,23 @@ void Manager::maintenancePipes(){
             Element* orig = edge->getOrig()->getInfo();
             Element* dest = edge->getDest()->getInfo();
             double w = edge->getWeight();
+            bool reverse = false;
+            if(edge->getReverse() != nullptr){
+                string code = dest->getCode() + " --- " + orig->getCode();
+                if(rmPipelines.find(code) != rmPipelines.end()){
+                    continue;
+                }
+                else{
+                    network.removeEdge(edge->getDest()->getInfo(),edge->getOrig()->getInfo());
+                    reverse = true; 
+                }
+            }
             network.removeEdge(edge->getOrig()->getInfo(),edge->getDest()->getInfo());
         
             unordered_map<string,int> flowswithoutpipe;
             unordered_map<Element*,double> incoming;
 
-            // cout << n++ << ": ";
+             cout << n++ << ": ";
             CalculateMaxFlow();  //edmonds
             for(const auto& [cityCode,city] : this->cities){
                 int flow = 0;
@@ -261,12 +272,14 @@ void Manager::maintenancePipes(){
                 string code = orig->getCode() + " --- " + dest->getCode();
                 rmPipelines[code] = affectedcities;
             }
-
-            network.addEdge(orig,dest,w);
+            if(reverse) network.addBidirectionalEdge(orig,dest,w);
+            else network.addEdge(orig,dest,w);
+            
 
         }
     }
     /**
+    cout << endl << endl;
     for(auto k : rmPipelines){
         cout << k.first << k.second.size() <<endl;
         for(auto n : k.second){
