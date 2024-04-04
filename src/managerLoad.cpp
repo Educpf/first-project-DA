@@ -1,6 +1,7 @@
 #include "../headers/Manager.h"
 #include <fstream>
 #include <sstream>
+using namespace std;
 
 void Manager::loadReservoirs()
 {

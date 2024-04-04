@@ -106,7 +106,7 @@ public:
     std::vector<Vertex *> getVertexSet() const;
 protected:
     std::vector<Vertex *> vertexSet;
-	std::unordered_map<string, Vertex *> vertexMap;
+	std::unordered_map<std::string, Vertex *> vertexMap;
 
     double ** distMatrix = nullptr;
     int **pathMatrix = nullptr;
