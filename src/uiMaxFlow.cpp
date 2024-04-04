@@ -63,8 +63,10 @@ void UI::maxFlowMenu()
 			continue;
 		lst.push_back(vtx);
 	}
+
 	size_t count = 0;
 	std::string str;
+	std::string search;
 	int totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
 
 	while (1)
@@ -74,7 +76,7 @@ void UI::maxFlowMenu()
 		<< "Service Metrics\n"
 		<< "\n"
 		<< "The total max flow for the network is: " << totalFlow << "\n\n"
-		<< "Max flow for all/searched elemens:\n\n";
+		<< "Max flow for all elements" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
 		if (!lst.empty())
 		{
 			for (size_t i = count; i < std::min(count + 10, lst.size()); i++)
@@ -106,9 +108,11 @@ void UI::maxFlowMenu()
 		<< "\n"
 		<< (lst.empty() ? "" : "[back] - Previous page\t[next] - Next page\n")
 		<< (lst.empty() ? "" : "[page (integer)] - Select a specific page\n")
+		<< "[reset] Reset search\n"
 		<< "[B] - Back \t\t[Q] - Exit\n"
 		<< "\n"
-		<< "You can search the max flow for a specific city by typing it below or use one of the commands above\n"
+		<< "You can search the max flow for a specific city\n"
+		<< "or use one of the commands above\n"
 		<< "\n"
         << "$> ";
 
@@ -146,9 +150,24 @@ void UI::maxFlowMenu()
 			count = (page - 1) * 10;
 			continue;
 		}
+
+		if (str == "reset")
+		{
+			search = "";
+			lst.clear();
+			for (Vertex *vtx : graph.getVertexSet())
+			{
+				if (dynamic_cast<Reservoir *>(vtx->getInfo()) != nullptr)
+					continue;
+				lst.push_back(vtx);
+			}
+			continue;
+		}
+
 		if (!str.empty())
 		{
 			lst = getSearchVertexes(graph, str);
+			search = str;
 			continue;
 		}
 		helpMsg("Invalid command!", "[next/back/b/q/(search term)]");
