@@ -9,4 +9,5 @@ add_executable(first_project_DA
         src/managerWork.cpp
         src/managerReliability.cpp
         src/managerPipes.cpp
+		src/uiMaxFlow.cpp
 )

@@ -1,4 +1,19 @@
 #include "../headers/Ui.h"
+#include <algorithm>
+
+/**
+ * Searches a string in another string.
+ * This search is case-insensitive.
+ * @param one The string to search
+ * @param two The string to be searched
+ * @return If there are any matches
+*/
+bool strFind(const std::string &one, const std::string &two) {
+	auto it = std::search(one.begin(), one.end(), two.begin(), two.end(),
+    	[](unsigned char a, unsigned char b) { return std::toupper(a) == std::toupper(b);}
+  		);
+  	return (it != one.end());
+}
 
 std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
 {
@@ -6,14 +21,10 @@ std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
 
 	if (searchTerm.empty())
 		return result;
-	std::transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::toupper);
 	for (auto vtx : graph.getVertexSet())
 	{
 		Element *elem = vtx->getInfo();
-		std::string code = elem->getCode();
-		if (code == searchTerm)
-			return {vtx};
-		if (std::find(code.begin(), code.end(), searchTerm) != code.end())
+		if (strFind(elem->getCode(), searchTerm))
 		{
 			result.push_back(vtx);
 			continue;
@@ -21,9 +32,7 @@ std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
 		City *city = dynamic_cast<City *>(elem);
 		if (city != nullptr)
 		{
-			std::string name = city->getName();
-			std::transform(name.begin(), name.end(), name.begin(), ::toupper);
-			if (std::find(name.begin(), name.end(), searchTerm) != name.end())
+			if (strFind(city->getName(), searchTerm))
 			{
 				result.push_back(vtx);
 				continue;
@@ -32,16 +41,8 @@ std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
 		Reservoir *reserv = dynamic_cast<Reservoir *>(elem);
 		if (reserv != nullptr)
 		{
-			std::string mName = reserv->getName();
-			std::transform(mName.begin(), mName.end(), mName.begin(), ::toupper);
-			if (std::find(mName.begin(), mName.end(), searchTerm) != mName.end())
-			{
-				result.push_back(vtx);
-				continue;
-			}
-			std::string munic = reserv->getMunicipality();
-			std::transform(munic.begin(), munic.end(), munic.begin(), ::toupper);
-			if (std::find(munic.begin(), munic.end(), searchTerm) != munic.end())
+			if (strFind(reserv->getMunicipality(), searchTerm) 
+				|| strFind(reserv->getName(), searchTerm))
 			{
 				result.push_back(vtx);
 				continue;
@@ -74,14 +75,25 @@ void UI::maxFlowMenu()
         std::cout 
 		<< "Service Metrics\n"
 		<< "\n"
-		<< "The total max flow for the network is:" << totalFlow << "\n\n";
+		<< "The total max flow for the network is: " << totalFlow << "\n\n"
+		<< "Max flow for all/searched elemens:\n\n";
 		if (!lst.empty())
 		{
-			for (size_t i = count; i < std::min(count + 10, lst.size()); i++) {
+			for (size_t i = count; i < std::min(count + 10, lst.size()); i++)
+			{
 				auto it = lst.begin();
 				std::advance(it, i);
-				auto w = *it;
-				std::cout << w->getInfo()->getCode() << " - " <<  getFlow(w) << ")\n";
+				
+				Vertex *w = *it;
+				City *city = dynamic_cast<City *>(w->getInfo());
+				Reservoir *reserv = dynamic_cast<Reservoir *>(w->getInfo());
+
+				std::cout << w->getInfo()->getCode();
+				if (city != nullptr) 
+					std::cout << " (" << city->getName() << ")";
+				if (reserv != nullptr) 
+					std::cout << " (" << reserv->getName() << " / " << reserv->getMunicipality() << ")";
+				std::cout << " - " << getFlow(w) << "\n";
 			}
 			std::cout << "\nPage " << (count + 10 - count % 10) / 10 << " of " 
 						<< totalPages << "\n";
@@ -138,11 +150,10 @@ void UI::maxFlowMenu()
 		}
 		if (!str.empty())
 		{
-			std::vector<Vertex *> result = getSearchVertexes(graph, str);
-			lst = result;
+			lst = getSearchVertexes(graph, str);
 			continue;
 		}
-		helpMsg("Invalid command!", "[next/back/b/q/(integer)]");
+		helpMsg("Invalid command!", "[next/back/b/q/(search term)]");
     }
 }
 

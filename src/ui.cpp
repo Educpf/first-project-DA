@@ -34,7 +34,8 @@ void UI::mainMenu()
 		<< "The system was loaded in " << loadtime << "s.\n"
 		<< "Select an option:\n"
         << "\n"
-        << " [1] Menu 1\n"
+		<< ">> Basic Service Metrics\n"
+        << " [1] Max Flow\n"
 		<< " [2] Menu 2\n"
         << "\n"
 		<< "[T] Test\n"
@@ -48,6 +49,12 @@ void UI::mainMenu()
 		{
 			CLEAR;
             exit(0);
+		}
+
+		if (str == "1")
+		{
+			maxFlowMenu();
+			continue;
 		}
 
 		if (str.size() > 1)
