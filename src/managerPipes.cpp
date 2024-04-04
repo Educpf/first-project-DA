@@ -93,13 +93,9 @@ double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
 
         // Check if distant path from reservoir is the biggest
         if (topDistance > actualTopDistance || (topDistance == actualTopDistance && newFlow > finalFlow)) {
-            // std::cout << " --- NEW PATH --- \n";
-            // cout << topDistance << " -- " << biggestPath.size() << "\n";
             list<Edge*> newBiggestPath;
             Vertex* node = fakeLast;
-            // std::cout << "LAST INSIDE BEFORE: " << last->getInfo()->getCode() << '\n';
             while (node != source) {
-                // std::cout << node->getInfo()->getCode() << " - " << std::flush;
                 Edge* e = node->getPath();
                 newBiggestPath.push_back(e);
                 if (e->getOrig() == node){
@@ -122,13 +118,8 @@ double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
                 last = fakeLast;
                 finalFlow = newFlow;
             }
-            // Check if changed anything
-            // std::cout << source->getInfo()->getCode();
-            // std::cout << "\n";
-            // std::cout << "LAST INSIDE AFTER: " << last->getInfo()->getCode() << '\n';
         }
     }
-    // std::cout << "BEFORE LAST :" << last->getInfo()->getCode() << '\n';
     return finalFlow;
 }
 
@@ -149,12 +140,7 @@ void Manager::balanceNetwork() {
     Vertex* last;
     double flow;
     while (flow = FarthestAugmentingPath(biggestPath, last)) {
-        // std::cout << "AFTER LAST :" << last->getInfo()->getCode() << '\n';
-        // std::cout << "\n\n\n SELECTED \n";
-        // std::cout << "From: ";
         for (Edge* e : biggestPath) {
-            // std::cout << last->getInfo()->getCode() << " - ";
-            // std::cout << last->getInfo()->getCode() << " - ";
             if (last == e->getDest()) {
                 last = e->getOrig();
                 e->setFlow(e->getFlow() + flow);
@@ -170,9 +156,7 @@ void Manager::balanceNetwork() {
             }
         }
         reservoirs.insert(last->getInfo()->getCode());
-        // std::cout << " -- To: " << last->getInfo()->getCode() << " with size: " << biggestPath.size()+1 << " and flow: " << flow << "\n\n\n";
         biggestPath.clear();
-        // std::cout << '\n';
     }
 
     result = AnalyzeBalance();
