@@ -6,7 +6,7 @@
 #include <queue>
 #include <limits>
 #include <algorithm>
-#include <unordered_set>
+#include <unordered_map>
 #include "Element.h"
 #include "MutablePriorityQueue.h"
 
@@ -94,6 +94,7 @@ public:
     ~Graph();
 
     Vertex *findVertex(Element *in) const;
+	Vertex *findVertexByCode(std::string code) const;
     inline bool addVertex(Element *in);
     inline bool removeVertex(Element *in);
 
@@ -103,10 +104,9 @@ public:
 
     int getNumVertex() const;
     std::vector<Vertex *> getVertexSet() const;
-	std::unordered_set<Vertex *> getVertexUnorderedSet() const;
 protected:
     std::vector<Vertex *> vertexSet;
-	std::unordered_set<Vertex *> vertexUnorderedSet;
+	std::unordered_map<string, Vertex *> vertexMap;
 
     double ** distMatrix = nullptr;
     int **pathMatrix = nullptr;
@@ -298,15 +298,22 @@ inline std::vector<Vertex *> Graph::getVertexSet() const {
     return vertexSet;
 }
 
-inline std::unordered_set<Vertex *> Graph::getVertexUnorderedSet() const {
-    return vertexUnorderedSet;
+inline Vertex *Graph::findVertexByCode(std::string code) const {
+	try
+	{
+		return vertexMap.at(code);
+	}
+	catch(const std::exception& e)
+	{
+		return nullptr;
+	}
 }
 
 /*
  * Auxiliary function to find a vertex with a given content.
  */
 inline Vertex *Graph::findVertex(Element *in) const {
-    for (auto v : vertexSet)
+	for (auto v : vertexSet)
         if (v->getInfo() == in)
             return v;
     return nullptr;
@@ -330,7 +337,7 @@ inline bool Graph::addVertex(Element *in) {
     	return false;
 	
 	Vertex *vtx = new Vertex(in);
-	vertexUnorderedSet.insert(vtx);
+	vertexMap[in->getCode()] = vtx;
 	vertexSet.push_back(vtx);
 	return true;
 }
@@ -348,7 +355,7 @@ inline bool Graph::removeVertex(Element *in) {
             for (auto u : vertexSet) {
                 u->removeEdge(v->getInfo());
             }
-			vertexUnorderedSet.erase(v);
+			vertexMap.erase(v->getInfo()->getCode());
             vertexSet.erase(it);
             delete v;
             return true;
@@ -363,8 +370,8 @@ inline bool Graph::removeVertex(Element *in) {
  * Returns true if successful, and false if the source or destination vertex does not exist.
  */
 inline bool Graph::addEdge(Element *sourc, Element *dest, double w) {
-    auto v1 = findVertex(sourc);
-    auto v2 = findVertex(dest);
+    auto v1 = findVertexByCode(sourc->getCode());
+    auto v2 = findVertexByCode(dest->getCode());
     if (v1 == nullptr || v2 == nullptr)
         return false;
     v1->addEdge(v2, w);
@@ -377,7 +384,7 @@ inline bool Graph::addEdge(Element *sourc, Element *dest, double w) {
  * Returns true if successful, and false if such edge does not exist.
  */
 inline bool Graph::removeEdge(Element *sourc, Element *dest) {
-    Vertex* srcVertex = findVertex(sourc);
+    Vertex* srcVertex = findVertexByCode(sourc->getCode());
     if (srcVertex == nullptr) {
         return false;
     }
@@ -385,8 +392,8 @@ inline bool Graph::removeEdge(Element *sourc, Element *dest) {
 }
 
 inline bool Graph::addBidirectionalEdge(Element *sourc, Element *dest, double w) {
-    auto v1 = findVertex(sourc);
-    auto v2 = findVertex(dest);
+    auto v1 = findVertexByCode(sourc->getCode());
+    auto v2 = findVertexByCode(dest->getCode());
     if (v1 == nullptr || v2 == nullptr)
         return false;
     auto e1 = v1->addEdge(v2, w);
