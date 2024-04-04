@@ -8,4 +8,5 @@ add_executable(first_project_DA
         src/managerLoad.cpp
         src/managerWork.cpp
         src/managerReliability.cpp
+        src/managerPipes.cpp
 )
