@@ -39,8 +39,10 @@ class Manager {
         void removeReservoir(Reservoir* reservoir);
     
     private:
+        double FarthestAugmentingPath(list<Edge*>& biggestPath, Vertex*& last);
         void EdmondsKarp(Element* source, Element* target, const unordered_set<Vertex*>& affected);
         double EdmondsBFS(Vertex* source, Vertex* target, const unordered_set<Vertex*>& affected);
+        tuple<double, double, double> AnalyzeBalance();
 };
 
 inline Graph Manager::getNetwork() {
