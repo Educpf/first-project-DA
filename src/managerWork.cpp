@@ -2,7 +2,8 @@
 #include <limits.h>
 #include <list>
 
-double Manager::CalculateMaxFlow(){
+double Manager::CalculateMaxFlow()
+{
     // Add super source
     Element* superSource = new Element(0, "SS");
     network.addVertex(superSource);
@@ -15,7 +16,7 @@ double Manager::CalculateMaxFlow(){
     Element* superSink = new Element(0, "ST");
     network.addVertex(superSink);
 
-    for (const auto& [code, sink]  : cities){
+    for (const auto& [code, sink] : cities){
         network.addEdge(sink, superSink, sink->getDemand());
     }
 
@@ -36,16 +37,11 @@ double Manager::CalculateMaxFlow(){
 
     EdmondsKarp(superSource, superSink, coiso);
 
-
-
     double total = 0;
     Vertex* superSinkVertex = network.findVertex(superSink);
     for (Edge* e : superSinkVertex->getIncoming()){
-        total+=e->getFlow();
+        total += e->getFlow();
     }
-
-    // Just to check result 
-    std::cout << "Max flow obtained was: " << total << std::endl;
 
     // Clean graph
     network.removeVertex(superSource);
@@ -56,8 +52,8 @@ double Manager::CalculateMaxFlow(){
     return total;
 }
 
-void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected){
-
+void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected)
+{
     double new_flow;
 
     auto sc = network.findVertex(source);
@@ -80,9 +76,8 @@ void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered
     }
 }
 
-double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected){
-
-
+double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected)
+{
     std::queue<std::pair<Vertex*, double>> q;
     q.push({source,std::numeric_limits<double>::max()});
 

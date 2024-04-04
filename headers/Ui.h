@@ -17,6 +17,7 @@ class UI {
 	public:
 		UI();
 		void mainMenu();
+		void maxFlowMenu();
 		void testMenu();
 		void helpMsg(std::string error, std::string usage);
 };
