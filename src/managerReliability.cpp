@@ -14,9 +14,9 @@ void Manager::removeReservoir(Reservoir* reservoir){
     }
 
     // Do BFS and store the affected pumping stations
-    unordered_set<Vertex*> affectedStations;
+    std::unordered_set<Vertex*> affectedStations;
 
-    queue<Vertex*> q;
+    std::queue<Vertex*> q;
     q.push(network.findVertex(reservoir));
     network.findVertex(reservoir)->setVisited(true);
 
@@ -56,7 +56,7 @@ void Manager::removeReservoir(Reservoir* reservoir){
     }
 
     // Use BFS to get the separating vertices
-    unordered_set<Vertex*> borderVertices;
+    std::unordered_set<Vertex*> borderVertices;
 
     while (!q.empty()){
         Vertex* v = q.front();
@@ -120,7 +120,7 @@ void Manager::removeReservoir(Reservoir* reservoir){
     for (Vertex* v: borderVertices){
 
         // TODO:  Maybe substitute for function inside Vertex that returns its type
-        string code = v->getInfo()->getCode();
+        std::string code = v->getInfo()->getCode();
         double capacity;
         switch (code[0])
         {

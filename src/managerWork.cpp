@@ -27,7 +27,7 @@ double Manager::CalculateMaxFlow(){
         v->setPath(nullptr);
     }
 
-    unordered_set<Vertex*> coiso;
+    std::unordered_set<Vertex*> coiso;
     for (auto e : allElements){
         coiso.insert(network.findVertex(e.second));
     }
@@ -56,7 +56,7 @@ double Manager::CalculateMaxFlow(){
     return total;
 }
 
-void Manager::EdmondsKarp(Element* source, Element* target, const unordered_set<Vertex*>& affected){
+void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected){
 
     double new_flow;
 
@@ -80,7 +80,7 @@ void Manager::EdmondsKarp(Element* source, Element* target, const unordered_set<
     }
 }
 
-double Manager::EdmondsBFS(Vertex* source, Vertex* target, const unordered_set<Vertex*>& affected){
+double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected){
 
 
     std::queue<std::pair<Vertex*, double>> q;

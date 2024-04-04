@@ -1,9 +1,7 @@
 #include "../headers/Manager.h"
-#include "limits.h"
-#include "list"
+#include <limits.h>
 
-
-double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
+double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath,
                                        Vertex*& last) {
     // the values for the final flow
     double finalFlow = 0;
@@ -26,7 +24,7 @@ double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
         }
 
         // Create queue with reservoir and remaining sending flow
-        queue<pair<Vertex*, double>> q;
+        std::queue<std::pair<Vertex*, double>> q;
         q.push({source, reservoir->getMaxDelivery()-alreadySending});
 
         // Clean the graph 
@@ -51,7 +49,7 @@ double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
                 if (availableSpace){
                     fakeLast = v;
                     topDistance = v->getDist();
-                    newFlow = min(flow, availableSpace);
+                    newFlow = std::min(flow, availableSpace);
                 }
             }
 
@@ -93,7 +91,7 @@ double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
 
         // Check if distant path from reservoir is the biggest
         if (topDistance > actualTopDistance || (topDistance == actualTopDistance && newFlow > finalFlow)) {
-            list<Edge*> newBiggestPath;
+            std::list<Edge*> newBiggestPath;
             Vertex* node = fakeLast;
             while (node != source) {
                 Edge* e = node->getPath();
@@ -125,7 +123,7 @@ double Manager::FarthestAugmentingPath(list<Edge*>& biggestPath,
 
 void Manager::balanceNetwork() {
     CalculateMaxFlow();
-    tuple<double, double, double> result = AnalyzeBalance();
+    std::tuple<double, double, double> result = AnalyzeBalance();
     std::cout << std::get<0>(result) << " - " << std::get<1>(result) << " - "
               << std::get<2>(result) << "\n";
 
@@ -135,8 +133,8 @@ void Manager::balanceNetwork() {
             e->setFlow(0);
         }
     }
-    unordered_set<string> reservoirs;
-    list<Edge*> biggestPath;
+    std::unordered_set<std::string> reservoirs;
+    std::list<Edge*> biggestPath;
     Vertex* last;
     double flow;
     while (flow = FarthestAugmentingPath(biggestPath, last)) {
@@ -172,9 +170,9 @@ void Manager::balanceNetwork() {
     std::cout << "With flow: " << total << '\n';
 }
 
-tuple<double, double, double> Manager::AnalyzeBalance() {
-    double biggest = numeric_limits<double>::min();
-    double smallest = numeric_limits<double>::max();
+std::tuple<double, double, double> Manager::AnalyzeBalance() {
+    double biggest = std::numeric_limits<double>::min();
+    double smallest = std::numeric_limits<double>::max();
     double sum = 0;
     double numEdges = 173;
     double totalPeso = 0;
@@ -188,9 +186,9 @@ tuple<double, double, double> Manager::AnalyzeBalance() {
             totalPeso += e->getWeight();
             double diff = e->getWeight() - e->getFlow();
             sum += diff;
-            biggest = max(biggest, diff);
+            biggest = std::max(biggest, diff);
             if (!e->getReverse() || !e->getReverse()->getFlow()) {
-                smallest = min(smallest, diff);
+                smallest = std::min(smallest, diff);
             }
         }
     }
