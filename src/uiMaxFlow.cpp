@@ -1,5 +1,8 @@
 #include "../headers/Ui.h"
 #include <algorithm>
+#include <fstream>
+#include <chrono>
+#include <iomanip>
 
 /**
  * Searches a string in another string.
@@ -50,6 +53,33 @@ int getFlow(Vertex *elem)
 	for (auto i : elem->getIncoming())
 		total += i->getFlow();
 	return total;
+}
+
+void saveMaxFlow(std::vector<Vertex *> &lst, int maxFlow)
+{
+	std::ofstream out("./maxFlowOutput.txt", std::ofstream::trunc);
+
+	auto now = std::chrono::system_clock::now();
+    auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+	out
+	<< "Information saved at " << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X") << "\n"
+	<< "The max flow for the network is: " << maxFlow << "\n"
+	<< "\n"
+	<< "The max flow for each element is the following:\n\n";
+
+	for (auto w : lst)
+	{
+		City *city = dynamic_cast<City *>(w->getInfo());
+		Reservoir *reserv = dynamic_cast<Reservoir *>(w->getInfo());
+
+		out << w->getInfo()->getCode();
+		if (city != nullptr) 
+		out << " (" << city->getName() << ")";
+		if (reserv != nullptr) 
+		out << " (" << reserv->getName() << " / " << reserv->getMunicipality() << ")";
+		out << " - " << getFlow(w) << "\n";
+	}
 }
 
 void UI::maxFlowMenu()
@@ -108,7 +138,8 @@ void UI::maxFlowMenu()
 		<< "\n"
 		<< (lst.empty() ? "" : "[back] - Previous page\t[next] - Next page\n")
 		<< (lst.empty() ? "" : "[page (integer)] - Select a specific page\n")
-		<< "[reset] Reset search\n"
+		<< "[reset] Reset search\n" 
+		<< (lst.empty() ? "" : "[save] Save displayed information to a file.\n")
 		<< "[B] - Back \t\t[Q] - Exit\n"
 		<< "\n"
 		<< "You can search the max flow for a specific city\n"
@@ -131,11 +162,21 @@ void UI::maxFlowMenu()
 			count = count + 10 < lst.size() + lst.size() % 10 ? count + 10 : count;
 			continue;
 		}
+
 		if (str == "back" && !lst.empty())
 		{
 			count = count < 10 ? 0 : count - 10;
 			continue;
 		}
+		if (str == "save")
+		{
+			saveMaxFlow(lst, totalFlow);
+			CLEAR;
+			std::cout << "Saved current search to \"./maxFlowOutput.txt\".\nPress ENTER to continue...";
+			while (std::cin.get() != '\n') { }
+			continue;
+		}
+
 		if (str.substr(0, 4) == "page")
 		{
 			if (str.size() <= 5 || lst.empty()) {
@@ -173,5 +214,3 @@ void UI::maxFlowMenu()
 		helpMsg("Invalid command!", "[next/back/b/q/(search term)]");
     }
 }
-
-double CalculateMaxFlow();
