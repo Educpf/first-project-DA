@@ -19,10 +19,10 @@ class Manager {
         std::unordered_map<std::string, City *> cities;
 		std::unordered_map<std::string, Element *> allElements;
 
-        unordered_map<string,int> maxflows;
-        unordered_map<string,int> deficitcities;
-        unordered_map<string,unordered_map<string,int>> rmPS;
-        unordered_map<string,unordered_map<string,int>> rmPipelines;
+        std::unordered_map<std::string, int> maxflows;
+        std::unordered_map<std::string, int> deficitcities;
+        std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPS;
+        std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPipelines;
 
     public:
 		inline Manager(bool useSmallSet) : useSmallSet(useSmallSet) {};
@@ -38,20 +38,18 @@ class Manager {
 		std::unordered_map<std::string, Station *> getStations();
         std::unordered_map<std::string, City *> getCities();
 		std::unordered_map<std::string, Element *> getAllElements();
+
         // Basic Service Metrics
         double CalculateMaxFlow();
         void maxflowcities();
         void citiesindeficit();
         void balanceNetwork();
 
-
         // Reliability
         void removeReservoir(Reservoir* reservoir);
         void maintenancePS();
         void maintenancePipes();
 
-
-    
     private:
         double FarthestAugmentingPath(std::list<Edge*>& biggestPath, Vertex*& last);
         void EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected);

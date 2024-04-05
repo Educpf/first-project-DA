@@ -1,5 +1,6 @@
 #include "../headers/Manager.h"
 #include <forward_list>
+using namespace std;
 
 void Manager::removeReservoir(Reservoir* reservoir){
 
@@ -163,12 +164,9 @@ void Manager::removeReservoir(Reservoir* reservoir){
     delete superSource;
 }
 
-
-
-
 void Manager::maintenancePS(){
     int n = 0;
-    for(const auto& [stationCode,station] : this->stations){
+    for (const auto& [stationCode,station] : this->stations){
         unordered_map<string,int> flowswithoutps;
         unordered_map<Element*,double> outgoing, incoming;
 
@@ -252,7 +250,7 @@ void Manager::maintenancePipes(){
             unordered_map<string,int> flowswithoutpipe;
             unordered_map<Element*,double> incoming;
 
-             cout << n++ << ": ";
+            cout << n++ << ": ";
             CalculateMaxFlow();  //edmonds
             for(const auto& [cityCode,city] : this->cities){
                 int flow = 0;

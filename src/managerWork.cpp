@@ -115,8 +115,6 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_
     return 0;
 }
 
-
-
 void Manager::maxflowcities(){ 
      CalculateMaxFlow();
      for(const auto& [code,city] : this->cities){
@@ -137,7 +135,7 @@ void Manager::maxflowcities(){
 
 
 void Manager::citiesindeficit() { 
-    unordered_map<string,int> result;
+    std::unordered_map<std::string, int> result;
     for(const auto& [code,city] : this->cities){
         int maxflowcity = maxflows[code];
         if(maxflowcity < city->getDemand()) deficitcities[code] = city->getDemand()-maxflowcity;
