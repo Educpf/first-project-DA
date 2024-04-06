@@ -145,6 +145,7 @@ void UI::removePSMenu()
 			search = "";
 			lst = manager.stations;
 			selected = nullptr;
+			totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
 			continue;
 		}
 

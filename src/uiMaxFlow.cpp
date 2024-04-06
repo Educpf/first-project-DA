@@ -166,6 +166,7 @@ void UI::maxFlowMenu()
 		{
 			search = "";
 			lst = manager.maxFlows;
+			totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
 			continue;
 		}
 

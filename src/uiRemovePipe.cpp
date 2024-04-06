@@ -4,12 +4,27 @@
 #include <chrono>
 #include <iomanip>
 
+RmResult getSearchPipe(Manager &manager, std::string searchTerm)
+{
+	RmResult result;
+
+	if (searchTerm.empty())
+		return result;
+	for (auto x : manager.rmPipelines)
+	{
+		if (UI::strFind(x.first, searchTerm))
+			result[x.first] = x.second;
+	}
+	return result;
+}
+
 void UI::removePipeMenu()
 {
 	RmResult lst = manager.rmPipelines;
 
 	size_t count = 0;
 	std::string str;
+	std::string search;
 	int totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
 
 	while (1)
@@ -18,7 +33,9 @@ void UI::removePipeMenu()
         std::cout 
 		<< "Reliability - Temporary removal of a pipe line\n"
 		<< "\n"
-		<< "By removing X -- Y pipeline, the following cities don't have their demands met:\n\n";
+		<< "By removing X -- Y pipeline, the following cities don't have their demands met:\n"
+		<< "(showing " << (search.empty() ? "all results)" : "results for " + search)
+		<< "\n\n";
 		if (!lst.empty())
 		{
 			for (size_t i = count; i < std::min(count + 10, lst.size()); i++)
@@ -36,16 +53,18 @@ void UI::removePipeMenu()
 		} 
 		else
 		{
-			std::cout << "This can't be empty. Was the dataset loaded correctly?\n";
+			std::cout << "The search for \"" << "\" returned no results\n";
 		}
 
 		std::cout
 		<< "\n"
 		<< (lst.empty() ? "" : "[back] - Previous page\t[next] - Next page\n")
 		<< (lst.empty() ? "" : "[page (integer)] - Select a specific page\n")
+		<< "[reset] Reset search\n" 
 		<< "[B] - Back \t\t[Q] - Exit\n"
 		<< "\n"
 		<< "You can use one of the commands above\n"
+		<< "or search for a pipeline in the format \"(element) --- (element)\""
 		<< "\n"
         << "$> ";
 
@@ -87,6 +106,22 @@ void UI::removePipeMenu()
 			continue;
 		}
 
-		helpMsg("Invalid command!", "[next/back/b/q]");
+		if (str == "reset")
+		{
+			search = "";
+			lst = manager.rmPipelines;
+			totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
+			continue;
+		}
+
+		if (!str.empty())
+		{
+			lst = getSearchPipe(manager, str);
+			search = str;
+			totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
+			continue;
+		}
+
+		helpMsg("Invalid command!", "[next/back/b/q/(search)]");
     }
 }
