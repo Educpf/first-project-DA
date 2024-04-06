@@ -10,6 +10,10 @@
 # define CLEAR (void)system("cls")
 #endif
 
+/**
+ * Class containing the methods used for displaying the UI.
+ * The Ui itself accessed a Manager to get what information to display
+*/
 class UI {
 	private:
 		long loadtime;
@@ -18,10 +22,13 @@ class UI {
 		UI(bool useSmallSet);
 
 		void mainMenu();
+
 		// Basic Service
 		void maxFlowMenu();
 		void meetDemandsMenu();
 		void balancedFlowMenu();
+
+		// Reliability
 		void removeReservoirMenu();
 		void removePSMenu();
 		void removePipeMenu();

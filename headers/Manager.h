@@ -14,6 +14,10 @@ typedef std::unordered_map<std::string, int> FlowComb;
 typedef std::tuple<double, double, double> AnaliseResult;
 typedef std::unordered_map<std::string, std::unordered_map<std::string, int>> RmResult;
 
+/**
+ * Class containg all the information and methods the manipulate it.
+ * Essential module of the project.
+*/
 class Manager {
     private:
 		bool useSmallSet;
@@ -58,6 +62,10 @@ class Manager {
         std::tuple<double, double, double> AnalyzeBalance();
 };
 
+/**
+ * Destructor for the manager class.
+ * Erases all allocated memory, including the one allocated by the Graph class.
+*/
 inline Manager::~Manager()
 {
 	for (const auto& [code, e] : allElements)

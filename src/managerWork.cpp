@@ -127,7 +127,10 @@ void Manager::maxFlowCities()
     }
 }
 
-
+/**
+ * Goes through the resulting map from maxFlowCites to save which cities are in deficit of water.
+ * @note Complexity: O(n)
+*/
 void Manager::citiesInDeficit()
 { 
     std::unordered_map<std::string, int> result;

@@ -4,6 +4,13 @@
 #include <chrono>
 #include <iomanip>
 
+/**
+ * Searches all the reservoirs for partial matches with the search term.
+ * @param manager Manager containing the reservoirs list
+ * @param searchTerm The term being searched
+ * @note Complexity: O(n)
+ * @return Map of matches
+*/
 std::unordered_map<std::string, Reservoir *> getSearchReservs(Manager &manager, std::string searchTerm)
 {
 	std::unordered_map<std::string, Reservoir *> result;
@@ -22,6 +29,11 @@ std::unordered_map<std::string, Reservoir *> getSearchReservs(Manager &manager, 
 	return result;
 }
 
+/**
+ * Extremely similar menu to removePSMenu, but instead displays
+ * information about affected sites when removing a specific Reservoir.
+ * @note Overall has a complexity of O(n)
+*/
 void UI::removeReservoirMenu()
 {
 	std::unordered_map<std::string, Reservoir *> lst = manager.reservoirs;

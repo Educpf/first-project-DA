@@ -4,6 +4,10 @@
 #include <chrono>
 #include <iomanip>
 
+/**
+ * Shows what cities do not have their demands met when the flow is maximal.
+ * @note Complexity: O(n)
+*/
 void UI::meetDemandsMenu()
 {
 	std::unordered_map<std::string, int> lst = manager.deficitcities;

@@ -4,6 +4,13 @@
 #include <chrono>
 #include <iomanip>
 
+/**
+ * Searches the result cached unordered map created by maintenancePipes for pipelines matching with the search term.
+ * @param manager Manager containing the unordered map
+ * @param searchTerm The term being searched
+ * @note Complexity: O(n)
+ * @return Map of matches
+*/
 RmResult getSearchPipe(Manager &manager, std::string searchTerm)
 {
 	RmResult result;
@@ -18,6 +25,11 @@ RmResult getSearchPipe(Manager &manager, std::string searchTerm)
 	return result;
 }
 
+/**
+ * Shows all the cities affected if a pipeline from A to B is removed from the network.
+ * A specific connect A to B can be searched
+ * @note Complexity: O(n)
+*/
 void UI::removePipeMenu()
 {
 	RmResult lst = manager.rmPipelines;

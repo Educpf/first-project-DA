@@ -4,6 +4,13 @@
 #include <chrono>
 #include <iomanip>
 
+/**
+ * Searches all the stations for partial matches with the search term.
+ * @param manager Manager containing the station list
+ * @param searchTerm The term being searched
+ * @note Complexity: O(n)
+ * @return Map of matches
+*/
 std::unordered_map<std::string, Station *> getSearchPS(Manager &manager, std::string searchTerm)
 {
 	std::unordered_map<std::string, Station *> result;
@@ -18,6 +25,11 @@ std::unordered_map<std::string, Station *> getSearchPS(Manager &manager, std::st
 	return result;
 }
 
+/**
+ * Displays the menu showing information about affected sites when removing a specific Pump Station.
+ * A user is promped to select the Pump Station and after shown the affected locations.
+ * @note Overall has a complexity of O(n)
+*/
 void UI::removePSMenu()
 {
 	std::unordered_map<std::string, Station *> lst = manager.stations;

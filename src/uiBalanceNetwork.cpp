@@ -4,6 +4,12 @@
 #include <chrono>
 #include <iomanip>
 
+/**
+ * Shows the average, variance and max difference between capacities 
+ * and flows of pipes in the network initially and
+ * after running a balacing algorithm
+ * @note Discarding the balacing algorithm, the page has a complexity of O(n)
+*/
 void UI::balancedFlowMenu()
 {	
 	std::string str;

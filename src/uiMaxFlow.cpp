@@ -18,6 +18,13 @@ bool UI::strFind(const std::string &one, const std::string &two) {
   	return (it != one.end());
 }
 
+/**
+ * Searches the cities for partial matches with the search term.
+ * @param manager Manager containing the city list
+ * @param searchTerm The term being searched
+ * @note Complexity: O(n)
+ * @return Map of matches
+*/
 std::unordered_map<std::string, int> getSearchVertexes(Manager &manager, std::string searchTerm)
 {
 	std::unordered_map<std::string, int> result;
@@ -32,6 +39,10 @@ std::unordered_map<std::string, int> getSearchVertexes(Manager &manager, std::st
 	return result;
 }
 
+/**
+ * Gets the flow for a specific vertex of the graph
+ * @note Complexity: O(IE) where IE is the number of incoming edges
+*/
 int getFlow(Vertex *elem)
 {
 	int total = 0;
@@ -40,6 +51,11 @@ int getFlow(Vertex *elem)
 	return total;
 }
 
+/**
+ * Saves the maxFlow information to a file near the executable path
+ * (static path: "./maxFlowOutput.txt").
+ * @note Complexity: O(n)
+*/
 void saveMaxFlow(Graph &graph, std::unordered_map<std::string, int> &lst, int maxFlow)
 {
 	std::ofstream out("./maxFlowOutput.txt", std::ofstream::trunc);
@@ -63,6 +79,11 @@ void saveMaxFlow(Graph &graph, std::unordered_map<std::string, int> &lst, int ma
 	}
 }
 
+/**
+ * Displays the max flow for the network and the flow for each city in it.
+ * (static path: "./maxFlowOutput.txt").
+ * @note Complexity: O(n)
+*/
 void UI::maxFlowMenu()
 {
 	std::unordered_map<std::string, int> lst = manager.maxFlows;
@@ -78,7 +99,7 @@ void UI::maxFlowMenu()
         std::cout 
 		<< "Basic Service Metrics\n"
 		<< "\n"
-		<< "The  max flow for the network is: " << manager.totalNetworkFlow << "\n\n"
+		<< "The max flow for the network is: " << manager.totalNetworkFlow << "\n\n"
 		<< "Max flow for all cities" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
 		if (!lst.empty())
 		{

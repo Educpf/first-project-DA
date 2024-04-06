@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <unordered_map>
 #include "Element.h"
-#include "MutablePriorityQueue.h"
 
 class Edge;
 class Vertex;
@@ -41,8 +40,7 @@ public:
     Edge *addEdge(Vertex *dest, double w);
     inline bool removeEdge(Element *in);
     inline void removeOutgoingEdges();
-
-    friend class MutablePriorityQueue<Vertex>;
+	
 protected:
     Element *info;
     std::vector<Edge *> adj;

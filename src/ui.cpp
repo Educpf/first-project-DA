@@ -4,6 +4,10 @@
 #include "windows.h"
 #endif
 
+/**
+ * Sets the console output mode to UTF8 if the platform is windows.
+ * If the is an argument after the executable, the small dataset will be loaded.
+*/
 int main(int argc, char **argv)
 {
 #ifdef _WIN32
@@ -14,6 +18,11 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/**
+ * Constructor for the Ui class.
+ * Creates a manager and loads up all the information while also pre-calculating some information.
+ * Also save the time it takes to load the system.
+*/
 UI::UI(bool useSmallSet) : manager(Manager(useSmallSet))
 {
 	auto start = std::chrono::high_resolution_clock::now();
@@ -30,6 +39,9 @@ UI::UI(bool useSmallSet) : manager(Manager(useSmallSet))
 	mainMenu();
 }
 
+/**
+ * Displays the main menu and awaits for a input from the user.
+*/
 void UI::mainMenu()
 {
 	while (1)
@@ -99,6 +111,9 @@ void UI::mainMenu()
     }
 }
 
+/**
+ * Shows a help message when there is an user error inputing a command.
+*/
 void UI::helpMsg(std::string error, std::string usage)
 {
 	CLEAR;
@@ -115,6 +130,12 @@ void UI::helpMsg(std::string error, std::string usage)
 	while (std::cin.get() != '\n') { }
 }
 
+/**
+ * Displays all the elements in the system.
+ * Used for testing purposed.
+ * Can be accessed using "T" even if no indication about it is displayed in the menu.
+ * @note Complexity: O(V)
+*/
 void UI::testMenu()
 {
 	CLEAR;
