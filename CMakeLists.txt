@@ -18,4 +18,5 @@ add_executable(first_project_DA
 		src/uiMeetDemands.cpp
 		src/uiBalanceNetwork.cpp
 		src/uiRemoveReservoir.cpp
+		src/uiRemovePS.cpp
 )

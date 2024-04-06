@@ -203,7 +203,7 @@ void Manager::maintenancePS()
         unordered_map<string,int> affectedcities;
         for(const auto& [cityCode,city] : this->cities){
             if(flowswithoutps[cityCode] < maxFlows[cityCode]){
-                affectedcities[cityCode] = flowswithoutps[cityCode]-maxFlows[cityCode];
+                affectedcities[cityCode] = flowswithoutps[cityCode] /*- maxFlows[cityCode]*/;
             }
         }
         if(!affectedcities.empty()){

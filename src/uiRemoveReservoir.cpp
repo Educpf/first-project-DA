@@ -65,9 +65,9 @@ void UI::removeReservoirMenu()
 				Element *e = std::get<0>(vtx)->getInfo();
 				std::cout << e->getCode() 
 				<< "\n Old flow: " <<  std::get<1>(vtx) 
-				<< "\n New flow: " << std::get<2>(vtx) << "\n";
+				<< "\n New flow: " << std::get<2>(vtx) << "\n\n";
 			}
-			std::cout << "\nTotal count: " << answ.size() << "\n";
+			std::cout << "Total count: " << answ.size() << "\n";
 		}
 		else
 		{

@@ -83,6 +83,11 @@ void UI::mainMenu()
 				case '4':
 					removeReservoirMenu();
 					break;
+				case '5':
+					removePSMenu();
+					break;
+				case '6':
+					break;
 				case 't':
 				case 'T':
 					testMenu();

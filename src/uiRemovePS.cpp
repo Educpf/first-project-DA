@@ -4,23 +4,24 @@
 #include <chrono>
 #include <iomanip>
 
-std::unordered_map<std::string, int> getSearchVertexes(Manager &manager, std::string searchTerm)
+std::unordered_map<std::string, Station *> getSearchPS(Manager &manager, std::string searchTerm)
 {
-	std::unordered_map<std::string, int> result;
+	std::unordered_map<std::string, Station *> result;
 
 	if (searchTerm.empty())
 		return result;
-	for (auto city : manager.cities)
+	for (auto stat : manager.stations)
 	{
-		if (UI::strFind(city.second->getName(), searchTerm))
-			result[city.first] = manager.maxFlows[city.first];
+		if (UI::strFind(stat.second->getCode(), searchTerm))
+			result[stat.first] = stat.second;
 	}
 	return result;
 }
 
 void UI::removePSMenu()
 {
-	RmResult lst = manager.rmPS;
+	std::unordered_map<std::string, Station *> lst = manager.stations;
+	Station *selected = nullptr;
 
 	size_t count = 0;
 	std::string str;
@@ -29,40 +30,57 @@ void UI::removePSMenu()
 
 	while (1)
     {
-        CLEAR; 
-		std::cout 
-		<< "Reliability - Temporary removal of a pump station \n"
-		<< "\n"
-		<< "Affected locations for all pump stations" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
-		if (!lst.empty())
+        CLEAR;
+        std::cout 
+		<< "Reliability - Temporary removal of a pump station\n"
+		<< "\n";
+		if (selected == nullptr && !lst.empty())
 		{
+			std::cout << "Select a pump station to remove and display affected sites:\n\n";
 			for (size_t i = count; i < std::min(count + 10, lst.size()); i++)
 			{
 				auto it = lst.begin();
 				std::advance(it, i);
-				Element *x = manager.network.findVertexByCode(it->first)->getInfo();
-				City *city = dynamic_cast<City *>(x);
-				std::cout << x->getCode();
-				if (city != nullptr) 
-					std::cout << " (" << city->getName() << ")";
+				Station *stat = it->second;
+				std::cout 
+				<< i << ". " 
+				<< stat->getCode() << "\n";
 			}
 			std::cout << "\nPage " << (count + 10 - count % 10) / 10 << " of " 
 						<< totalPages << "\n";
 			std::cout << "Total count: " << lst.size() << "\n";
+		} 
+		else if (selected)
+		{
+			std::unordered_map<std::string, int> answ = manager.rmPS[selected->getCode()];
+			std::cout << "Affected sites when removing \"" << selected->getCode() << "\":\n\n";
+			for (auto vtx : answ)
+			{
+				std::cout << vtx.first
+				<< "\n Old flow: " << manager.maxFlows[vtx.first]
+				<< "\n New flow: " << vtx.second 
+				<< "\n\n";
+			}
+			std::cout << "Total count: " << answ.size() << "\n";
 		}
 		else
 		{
-			std::cout << "The search for " << str << " returned no results.\n";
+			std::cout
+			<< "Select a pump station to remove and display affected sites:\n"
+			<< "\n"
+			<< "The search for " << str << " returned no results.\n";
 		}
 
 		std::cout
 		<< "\n"
-		<< (lst.empty() ? "" : "[back] - Previous page\t[next] - Next page\n")
-		<< (lst.empty() ? "" : "[page (integer)] - Select a specific page\n")
+		<< (lst.empty() || selected != nullptr ? "" : "[back] - Previous page\t[next] - Next page\n")
+		<< (lst.empty() || selected != nullptr ? "" : "[page (integer)] - Select a specific page\n")
+		<< (lst.empty() || selected != nullptr ? "" : "[select (number)] Select a pump station\n")
+		<< "[reset] Reset search/selection\n"
 		<< "[B] - Back \t\t[Q] - Exit\n"
 		<< "\n"
-		<< "You can search the max flow for a specific city\n"
-		<< "or use one of the commands above\n"
+		<< (lst.empty() || selected != nullptr ? "You can " : "You can search for a specific pump station\nor ")
+		<< "use one of the commands above\n"
 		<< "\n"
         << "$> ";
 
@@ -73,6 +91,7 @@ void UI::removePSMenu()
 			CLEAR;
             exit(0);
 		}
+
 		if (str == "B" || str == "b")
 			break;
 
@@ -88,7 +107,7 @@ void UI::removePSMenu()
 			continue;
 		}
 
-		if (str.substr(0, 4) == "page")
+		if (str.substr(0, 4) == "page" && !lst.empty())
 		{
 			if (str.size() <= 5 || lst.empty()) {
 				helpMsg("There is no page to change to!", "page [num] if there is results");
@@ -103,6 +122,40 @@ void UI::removePSMenu()
 			continue;
 		}
 
-		helpMsg("Invalid command!", "[next/back/b/q]");
+		if (str.substr(0, 6) == "select")
+		{
+			if (str.size() <= 7)
+			{
+				helpMsg("You must provide a number.", "select [num]");
+				continue;
+			}
+			int i = atoi(str.substr(6).c_str());
+			if (i < 0 || i >= lst.size()) {
+				helpMsg("This number is not a valid option!", "select [num]");
+				continue;
+			}
+			auto it = lst.begin();
+			std::advance(it, i);
+			selected = it->second;
+			continue;
+		}
+
+		if (str == "reset")
+		{
+			search = "";
+			lst = manager.stations;
+			selected = nullptr;
+			continue;
+		}
+
+		if (!str.empty())
+		{
+			lst = getSearchPS(manager, str);
+			search = str;
+			totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
+			continue;
+		}
+
+		helpMsg("Invalid command!", "[next/back/reset/b/q/(search term)]");
     }
 }
