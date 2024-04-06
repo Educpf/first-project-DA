@@ -28,6 +28,8 @@ class Manager {
 		std::unordered_map<std::string, Element *> allElements;
 
 		inline Manager(bool useSmallSet) : useSmallSet(useSmallSet) {};
+		~Manager();
+
         // Loaders
         void loadReservoirs();
         void loadStations();
@@ -51,5 +53,11 @@ class Manager {
         double EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected);
         std::tuple<double, double, double> AnalyzeBalance();
 };
+
+inline Manager::~Manager()
+{
+	for (const auto& [code, e] : allElements)
+		delete e;
+}
 
 #endif //FIRST_PROJECT_DA_MANAGER_H
