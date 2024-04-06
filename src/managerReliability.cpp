@@ -176,7 +176,7 @@ std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reser
 void Manager::maintenancePS()
 {
     int n = 0;
-    for (const auto& [stationCode,station] : this->stations){
+    for (const auto& [stationCode, station] : this->stations){
         unordered_map<string,int> flowswithoutps;
         unordered_map<Element*,double> outgoing, incoming;
 
@@ -193,18 +193,18 @@ void Manager::maintenancePS()
         network.removeVertex(station);
         // cout << n++ << ": ";
         CalculateMaxFlow();  //edmonds
-        for(const auto& [cityCode,city] : this->cities){
+        for(const auto& [cityCode, city] : this->cities)
+		{
             int flow = 0;
-            for(auto in : network.findVertex(city)->getIncoming()){
+            for(auto in : network.findVertex(city)->getIncoming())
                 flow += in->getFlow();
-            }
             flowswithoutps[cityCode] = flow;
         }
-        unordered_map<string,int> affectedcities;
-        for(const auto& [cityCode,city] : this->cities){
-            if(flowswithoutps[cityCode] < maxFlows[cityCode]){
+        unordered_map<string, int> affectedcities;
+        for(const auto& [cityCode,city] : this->cities)
+		{
+            if(flowswithoutps[cityCode] < maxFlows[cityCode])
                 affectedcities[cityCode] = flowswithoutps[cityCode] /*- maxFlows[cityCode]*/;
-            }
         }
         if(!affectedcities.empty()){
             rmPS[stationCode] = affectedcities;
@@ -213,11 +213,12 @@ void Manager::maintenancePS()
         network.addVertex(station);
 
         for(const auto& [v,w] : outgoing){
-            if(incoming.find(v) != incoming.end()){
+            /*if(incoming.find(v) != incoming.end()){
                 network.addBidirectionalEdge(v,station,w);
                 incoming.erase(v);
             }
-            else network.addEdge(station,v,w);
+            else*/
+			network.addEdge(station,v,w);
         }
         for(const auto& [v,w] : incoming){
             network.addEdge(v,station,w);

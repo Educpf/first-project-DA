@@ -65,8 +65,6 @@ void saveMaxFlow(Graph &graph, std::unordered_map<std::string, int> &lst, int ma
 
 void UI::maxFlowMenu()
 {
-	if (manager.totalNetworkFlow == -1)
-		manager.maxFlowCities();
 	std::unordered_map<std::string, int> lst = manager.maxFlows;
 
 	size_t count = 0;
