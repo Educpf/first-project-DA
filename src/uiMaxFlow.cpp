@@ -11,22 +11,22 @@
  * @param two The string to be searched
  * @return If there are any matches
 */
-bool strFind(const std::string &one, const std::string &two) {
+bool UI::strFind(const std::string &one, const std::string &two) {
 	auto it = std::search(one.begin(), one.end(), two.begin(), two.end(),
     	[](unsigned char a, unsigned char b) { return std::toupper(a) == std::toupper(b);}
   		);
   	return (it != one.end());
 }
 
-std::unordered_map<std::string, int> getSearchVertexes(Graph &graph, Manager &manager, std::string searchTerm)
+std::unordered_map<std::string, int> getSearchVertexes(Manager &manager, std::string searchTerm)
 {
 	std::unordered_map<std::string, int> result;
 
 	if (searchTerm.empty())
 		return result;
-	for (auto city : manager.getCities())
+	for (auto city : manager.cities)
 	{
-		if (strFind(city.second->getName(), searchTerm))
+		if (UI::strFind(city.second->getName(), searchTerm))
 			result[city.first] = manager.maxFlows[city.first];
 	}
 	return result;
@@ -51,7 +51,7 @@ void saveMaxFlow(Graph &graph, std::unordered_map<std::string, int> &lst, int ma
 	<< "Information saved at " << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X") << "\n"
 	<< "The max flow for the network is: " << maxFlow << "\n"
 	<< "\n"
-	<< "The max flow for each element is the following:\n\n";
+	<< "The max flow for each city is the following:\n\n";
 
 	for (auto w : lst)
 	{
@@ -65,8 +65,6 @@ void saveMaxFlow(Graph &graph, std::unordered_map<std::string, int> &lst, int ma
 
 void UI::maxFlowMenu()
 {
-	int totalFlow = manager.CalculateMaxFlow();
-	Graph graph = manager.getNetwork();
 	std::unordered_map<std::string, int> lst = manager.maxFlows;
 
 	size_t count = 0;
@@ -78,9 +76,9 @@ void UI::maxFlowMenu()
     {
         CLEAR;
         std::cout 
-		<< "Service Metrics\n"
+		<< "Basic Service Metrics\n"
 		<< "\n"
-		<< "The total max flow for the network is: " << totalFlow << "\n\n"
+		<< "The total max flow for the network is: " << manager.totalNetworkFlow << "\n\n"
 		<< "Max flow for all cities" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
 		if (!lst.empty())
 		{
@@ -88,12 +86,13 @@ void UI::maxFlowMenu()
 			{
 				auto it = lst.begin();
 				std::advance(it, i);
-				Element *x = graph.findVertexByCode(it->first)->getInfo();
+				Element *x = manager.network.findVertexByCode(it->first)->getInfo();
 				City *city = dynamic_cast<City *>(x);
 				std::cout << x->getCode();
 				if (city != nullptr) 
 					std::cout << " (" << city->getName() << ")";
-				std::cout << " - " << it->second << "\n";
+				std::cout 
+				<< " -> Max flow: " << it->second << "\n";
 			}
 			std::cout << "\nPage " << (count + 10 - count % 10) / 10 << " of " 
 						<< totalPages << "\n";
@@ -129,7 +128,7 @@ void UI::maxFlowMenu()
 
 		if (str == "next" && !lst.empty())
 		{
-			count = count + 10 < lst.size() + lst.size() % 10 ? count + 10 : count;
+			count = count + 10 < lst.size() + (lst.size() + 1 / 10) % 10 ? count + 10 : count;
 			continue;
 		}
 
@@ -138,9 +137,10 @@ void UI::maxFlowMenu()
 			count = count < 10 ? 0 : count - 10;
 			continue;
 		}
+
 		if (str == "save")
 		{
-			saveMaxFlow(graph, lst, totalFlow);
+			saveMaxFlow(manager.network, lst, manager.totalNetworkFlow);
 			CLEAR;
 			std::cout << "Saved current search to \"./maxFlowOutput.txt\".\nPress ENTER to continue...";
 			while (std::cin.get() != '\n') { }
@@ -171,10 +171,11 @@ void UI::maxFlowMenu()
 
 		if (!str.empty())
 		{
-			lst = getSearchVertexes(graph, manager, str);
+			lst = getSearchVertexes(manager, str);
 			search = str;
 			continue;
 		}
-		helpMsg("Invalid command!", "[next/back/b/q/(search term)]");
+
+		helpMsg("Invalid command!", "[next/back/reset/b/q/(search term)]");
     }
 }

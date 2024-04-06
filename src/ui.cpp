@@ -46,50 +46,41 @@ void UI::mainMenu()
         << "\n"
 		<< ">> Basic Service Metrics\n"
         << " [1] Max Flow\n"
-		<< " [2] Menu 2\n"
+		<< " [2] Cities in water deficit\n"
+		<< " [3] Balance Network\n"
         << "\n"
-		<< "[T] Test\n"
+		<< ">> Reliability\n"
+		<< " [4] Reservoir removal\n"
+		<< " [5] Pump Station removal\n"
+		<< " [6] Pipeline removal\n"
+		<< "\n"
 		<< "[Q] Exit\n"
 		<< "\n"
         << "$> ";
         std::string str;
 		std::getline(std::cin, str);
 
-        if (str == "Q" || str == "q")
+		if (str.size() == 1)
 		{
-			CLEAR;
-            exit(0);
-		}
-
-		if (str == "1")
-		{
-			maxFlowMenu();
+			switch (str[0])
+			{
+				case 'q':
+				case 'Q':
+					CLEAR;
+					exit(0);
+					break;
+				case '1':
+					maxFlowMenu();
+					break;
+				case '2':
+					meetDemandsMenu();
+					break;
+				case 't':
+				case 'T':
+					testMenu();
+					break;
+			}
 			continue;
-		}
-
-		if (str.size() > 1)
-		{
-			helpMsg("", "");
-			continue;
-		}
-
-		if (str == "T" || str == "t")
-		{
-			testMenu();
-			continue;
-		}
-
-		switch (str[0] - '0')
-		{
-			case 1:
-				// menu 1
-				break;
-			case 2:
-				// menu 2
-				break;
-			default:
-				helpMsg("Command not found!", "help - shows all commands");
-				break;
 		}
     }
 }
@@ -115,7 +106,7 @@ void UI::testMenu()
 	CLEAR;
 	std::cout << "Testing load\n";
 	int count = 0;
-	for (auto i : manager.getAllElements())
+	for (auto i : manager.allElements)
 	{
 		std::cout << i.first << " -> " << i.second->getCode() << " + " << i.second->getId() << "\n";
 		count++;

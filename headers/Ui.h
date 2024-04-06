@@ -16,9 +16,15 @@ class UI {
 		Manager manager;
 	public:
 		UI(bool useSmallSet);
+
 		void mainMenu();
+		// Basic Service
 		void maxFlowMenu();
+		void meetDemandsMenu();
+
+		// Utils
 		void testMenu();
+		static bool strFind(const std::string &one, const std::string &two);
 		void helpMsg(std::string error, std::string usage);
 };
 

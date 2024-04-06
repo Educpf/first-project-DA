@@ -13,17 +13,19 @@
 class Manager {
     private:
 		bool useSmallSet;
-        Graph network;
-        std::unordered_map<std::string, Reservoir *> reservoirs;
-        std::unordered_map<std::string, Station *> stations;
-        std::unordered_map<std::string, City *> cities;
-		std::unordered_map<std::string, Element *> allElements;
 
     public:
+		int totalNetworkFlow;
 		std::unordered_map<std::string, int> maxFlows;
         std::unordered_map<std::string, int> deficitcities;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPS;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPipelines;
+
+		Graph network;
+        std::unordered_map<std::string, Reservoir *> reservoirs;
+        std::unordered_map<std::string, Station *> stations;
+        std::unordered_map<std::string, City *> cities;
+		std::unordered_map<std::string, Element *> allElements;
 
 		inline Manager(bool useSmallSet) : useSmallSet(useSmallSet) {};
         // Loaders
@@ -31,13 +33,6 @@ class Manager {
         void loadStations();
         void loadCities();
         void loadPipes();
-
-		// Getters
-		Graph getNetwork();
-		std::unordered_map<std::string, Reservoir *> getReservoirs();
-		std::unordered_map<std::string, Station *> getStations();
-        std::unordered_map<std::string, City *> getCities();
-		std::unordered_map<std::string, Element *> getAllElements();
 
         // Basic Service Metrics
         double CalculateMaxFlow();
@@ -56,25 +51,5 @@ class Manager {
         double EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected);
         std::tuple<double, double, double> AnalyzeBalance();
 };
-
-inline Graph Manager::getNetwork() {
-	return network;
-}
-
-inline std::unordered_map<std::string, Reservoir *> Manager::getReservoirs() {
-	return reservoirs;
-}
-
-inline std::unordered_map<std::string, Station *> Manager::getStations() {
-	return stations;
-}
-
-inline std::unordered_map<std::string, City *> Manager::getCities() {
-	return cities;
-}
-
-inline std::unordered_map<std::string, Element *> Manager::getAllElements() {
-	return allElements;
-}
 
 #endif //FIRST_PROJECT_DA_MANAGER_H

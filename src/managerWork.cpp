@@ -117,13 +117,13 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_
 
 void Manager::maxFlowCities()
 { 
-     CalculateMaxFlow();
-     for (const auto& [code, city] : this->cities)
-	 {
-        int flow = 0;
-        for (auto incoming : network.findVertexByCode(code)->getIncoming())
-            flow += incoming->getFlow();
-        maxFlows[code] = flow;
+    totalNetworkFlow = CalculateMaxFlow();
+    for (const auto& [code, city] : this->cities)
+	{
+    	int flow = 0;
+    	for (auto incoming : network.findVertexByCode(code)->getIncoming())
+    	    flow += incoming->getFlow();
+    	maxFlows[code] = flow;
     }
 }
 
