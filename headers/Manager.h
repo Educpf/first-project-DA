@@ -47,7 +47,7 @@ class Manager {
         std::pair<AnaliseResult, AnaliseResult> balanceNetwork();
 
         // Reliability
-        std::vector<std::tuple<Vertex *, int, int>> removeReservoir(Reservoir* reservoir);
+        std::vector<std::tuple<Vertex *, double, double>> removeReservoir(Reservoir* reservoir);
         void maintenancePS();
         void maintenancePipes();
 

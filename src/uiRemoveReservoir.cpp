@@ -58,13 +58,14 @@ void UI::removeReservoirMenu()
 		} 
 		else if (selected)
 		{
-			std::vector<std::tuple<Vertex *, int, int>> answ = manager.removeReservoir(selected);
+			std::vector<std::tuple<Vertex *, double, double>> answ = manager.removeReservoir(selected);
 			std::cout << "Affected sites when removing \"" << selected->getCode() << " " << selected->getName() << "\":\n\n";
 			for (auto vtx : answ)
 			{
 				Element *e = std::get<0>(vtx)->getInfo();
 				std::cout << e->getCode() 
-				<< "\n Old flow: " <<  std::get<1>(vtx) << "\n New flow: " << "\n";
+				<< "\n Old flow: " <<  std::get<1>(vtx) 
+				<< "\n New flow: " << std::get<2>(vtx) << "\n";
 			}
 			std::cout << "\nTotal count: " << answ.size() << "\n";
 		}

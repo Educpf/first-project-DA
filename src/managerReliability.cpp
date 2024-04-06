@@ -3,7 +3,7 @@
 #include <tuple>
 using namespace std;
 
-std::vector<std::tuple<Vertex *, int, int>> Manager::removeReservoir(Reservoir* reservoir)
+std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reservoir* reservoir)
 {
     CalculateMaxFlow();
 
@@ -156,7 +156,20 @@ std::vector<std::tuple<Vertex *, int, int>> Manager::removeReservoir(Reservoir* 
     delete superSink;
     delete superSource;
 
-	std::vector<std::tuple<Vertex *, int, int>> result;
+	std::vector<std::tuple<Vertex *, double, double>> result;
+	for (auto aff : affectedStations)
+	{
+		City *city = dynamic_cast<City *>(aff->getInfo());
+		if (city == nullptr)
+			continue;
+		double total = 0;
+		for (auto i : aff->getIncoming())
+			total += i->getFlow();
+		double oldTotal = maxFlows[city->getCode()];
+		if (oldTotal > total)
+			result.push_back({aff, oldTotal, total});
+	}
+
 	return result;
 }
 
@@ -249,7 +262,6 @@ void Manager::maintenancePipes()
             unordered_map<string,int> flowswithoutpipe;
             unordered_map<Element*,double> incoming;
 
-            cout << n++ << ": ";
             CalculateMaxFlow();  //edmonds
             for(const auto& [cityCode,city] : this->cities){
                 int flow = 0;
