@@ -18,7 +18,7 @@ void UI::balancedFlowMenu()
 			
 		std::cout
 		<< ">> Base network stats\n"
-		<< " Differences between capacities and flows of pipes:\n"
+		<< " Differences between capacities and flows of pipes\n"
 		<< "\tAverage:\t" << std::get<0>(res.first) << "\n"
 		<< "\tVariance:\t" << std::get<1>(res.first) << "\n"
 		<< "\tMax Difference:\t" << std::get<2>(res.first) << "\n"
@@ -26,7 +26,7 @@ void UI::balancedFlowMenu()
 		
 		std::cout
 		<< ">> Balanced network stats\n"
-		<< " Differences between capacities and flows of pipes:\n"
+		<< " Differences between capacities and flows of pipes\n"
 		<< "\tAverage:\t" << std::get<0>(res.second) << "\n"
 		<< "\tVariance:\t" << std::get<1>(res.second) << "\n"
 		<< "\tMax Difference:\t" << std::get<2>(res.second) << "\n"
