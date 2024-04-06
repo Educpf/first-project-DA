@@ -75,6 +75,9 @@ void UI::mainMenu()
 				case '2':
 					meetDemandsMenu();
 					break;
+				case '3':
+					balancedFlowMenu();
+					break;
 				case 't':
 				case 'T':
 					testMenu();

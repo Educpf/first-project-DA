@@ -21,6 +21,7 @@ class UI {
 		// Basic Service
 		void maxFlowMenu();
 		void meetDemandsMenu();
+		void balancedFlowMenu();
 
 		// Utils
 		void testMenu();

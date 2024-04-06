@@ -123,7 +123,7 @@ void Manager::maxFlowCities()
     	int flow = 0;
     	for (auto incoming : network.findVertexByCode(code)->getIncoming())
     	    flow += incoming->getFlow();
-    	maxFlows[code] = flow;
+		maxFlows[code] = flow;
     }
 }
 
@@ -134,7 +134,7 @@ void Manager::citiesInDeficit()
     for (const auto& [code, city] : this->cities)
 	{
     	int maxFlowCity = maxFlows[code];
-    	if (maxFlowCity < city->getDemand()) 
+    	if (maxFlowCity < city->getDemand())
 			deficitcities[code] = city->getDemand() - maxFlowCity;
     }
 }

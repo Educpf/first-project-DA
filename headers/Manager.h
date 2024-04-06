@@ -10,12 +10,15 @@
 #include <unordered_map>
 #include <unordered_set>
 
+typedef std::unordered_map<std::string, int> FlowComb;
+typedef std::tuple<double, double, double> AnaliseResult;
+
 class Manager {
     private:
 		bool useSmallSet;
 
     public:
-		int totalNetworkFlow;
+		double totalNetworkFlow;
 		std::unordered_map<std::string, int> maxFlows;
         std::unordered_map<std::string, int> deficitcities;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPS;
@@ -40,7 +43,7 @@ class Manager {
         double CalculateMaxFlow();
         void maxFlowCities();
         void citiesInDeficit();
-        void balanceNetwork();
+        std::pair<AnaliseResult, AnaliseResult> balanceNetwork();
 
         // Reliability
         void removeReservoir(Reservoir* reservoir);

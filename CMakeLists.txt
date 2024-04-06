@@ -16,4 +16,5 @@ add_executable(first_project_DA
         src/managerPipes.cpp
 		src/uiMaxFlow.cpp
 		src/uiMeetDemands.cpp
+		src/uiBalanceNetwork.cpp
 )

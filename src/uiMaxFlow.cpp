@@ -78,7 +78,7 @@ void UI::maxFlowMenu()
         std::cout 
 		<< "Basic Service Metrics\n"
 		<< "\n"
-		<< "The total max flow for the network is: " << manager.totalNetworkFlow << "\n\n"
+		<< "The  max flow for the network is: " << manager.totalNetworkFlow << "\n\n"
 		<< "Max flow for all cities" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
 		if (!lst.empty())
 		{

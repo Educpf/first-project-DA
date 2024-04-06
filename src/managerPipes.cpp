@@ -121,11 +121,9 @@ double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath,
     return finalFlow;
 }
 
-void Manager::balanceNetwork() {
+std::pair<AnaliseResult, AnaliseResult> Manager::balanceNetwork() {
     CalculateMaxFlow();
-    std::tuple<double, double, double> result = AnalyzeBalance();
-    std::cout << std::get<0>(result) << " - " << std::get<1>(result) << " - "
-              << std::get<2>(result) << "\n";
+    AnaliseResult initial = AnalyzeBalance();
 
     // Clean graph
     for (Vertex* v : network.getVertexSet()) {
@@ -157,17 +155,9 @@ void Manager::balanceNetwork() {
         biggestPath.clear();
     }
 
-    result = AnalyzeBalance();
-    std::cout << std::get<0>(result) << " - " << std::get<1>(result) << " - "
-              << std::get<2>(result) << "\n";
+    AnaliseResult final = AnalyzeBalance();
 
-    double total = 0;
-    for (const auto& [code, city] : cities){
-        for (Edge* e : network.findVertex(city)->getIncoming()){
-            total += e->getFlow();
-        }
-    }
-    std::cout << "With flow: " << total << '\n';
+    return {initial, final};
 }
 
 std::tuple<double, double, double> Manager::AnalyzeBalance() {
@@ -200,10 +190,10 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
         }
     }
     
-    std::cout << "smallest: " << smallest << '\n';
+    /*std::cout << "smallest: " << smallest << '\n';
     std::cout << "Pipes negativos: " << count << '\n';
     std::cout << "Total weight: " << totalPeso << '\n';
     std::cout << "Total empty: " << totalEmpty << '\n';
-    std::cout << "Total output: " << totalOutput << '\n';
+    std::cout << "Total output: " << totalOutput << '\n';*/
     return {sum / numEdges, biggest - smallest, biggest};
 }
