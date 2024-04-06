@@ -166,6 +166,8 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
     double sum = 0;
     double numEdges = 173;
     double totalPeso = 0;
+	double variance = 0;
+	double mean = 0;
     int count = 0;
     double totalEmpty = 0;
 
@@ -190,10 +192,19 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
         }
     }
     
+	mean = sum / numEdges;
+	for (Vertex *v : network.getVertexSet())
+	{
+		for (Edge* e : v->getAdj()) {
+            double prc = (e->getWeight() - e->getFlow() - mean);
+            variance += prc * prc;
+        }
+	}
+	variance = variance / numEdges;
     /*std::cout << "smallest: " << smallest << '\n';
     std::cout << "Pipes negativos: " << count << '\n';
     std::cout << "Total weight: " << totalPeso << '\n';
     std::cout << "Total empty: " << totalEmpty << '\n';
     std::cout << "Total output: " << totalOutput << '\n';*/
-    return {sum / numEdges, biggest - smallest, biggest};
+    return {mean, variance, biggest - smallest};
 }
