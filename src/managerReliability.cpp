@@ -1,8 +1,9 @@
 #include "../headers/Manager.h"
 #include <forward_list>
+#include <tuple>
 using namespace std;
 
-std::unordered_set<Vertex*> Manager::removeReservoir(Reservoir* reservoir)
+std::vector<std::tuple<Vertex *, int, int>> Manager::removeReservoir(Reservoir* reservoir)
 {
     CalculateMaxFlow();
 
@@ -154,7 +155,9 @@ std::unordered_set<Vertex*> Manager::removeReservoir(Reservoir* reservoir)
 
     delete superSink;
     delete superSource;
-	return affectedStations;
+
+	std::vector<std::tuple<Vertex *, int, int>> result;
+	return result;
 }
 
 void Manager::maintenancePS()
@@ -194,7 +197,6 @@ void Manager::maintenancePS()
             rmPS[stationCode] = affectedcities;
         }
         
-
         network.addVertex(station);
 
         for(const auto& [v,w] : outgoing){
@@ -211,6 +213,7 @@ void Manager::maintenancePS()
 
 	// Force re-calculation of max flow in some menus
 	totalNetworkFlow = -1;
+
     /**
     for(auto k : rmPS){
         cout << k.first << ": " << k.second.size() <<endl;
@@ -221,8 +224,6 @@ void Manager::maintenancePS()
     cout<<rmPS.size();
     */
 }
-
-
 
 void Manager::maintenancePipes()
 {
@@ -289,6 +290,3 @@ void Manager::maintenancePipes()
     cout<<rmPipelines.size();
     */
 }
-
-    
-

@@ -23,6 +23,7 @@ class UI {
 		void meetDemandsMenu();
 		void balancedFlowMenu();
 		void removeReservoirMenu();
+		void removePSMenu();
 
 		// Utils
 		void testMenu();

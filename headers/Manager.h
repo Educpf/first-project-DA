@@ -12,6 +12,7 @@
 
 typedef std::unordered_map<std::string, int> FlowComb;
 typedef std::tuple<double, double, double> AnaliseResult;
+typedef std::unordered_map<std::string, std::unordered_map<std::string, int>> RmResult;
 
 class Manager {
     private:
@@ -19,10 +20,10 @@ class Manager {
 
     public:
 		double totalNetworkFlow = -1;
-		std::unordered_map<std::string, int> maxFlows;
-        std::unordered_map<std::string, int> deficitcities;
-        std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPS;
-        std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPipelines;
+		FlowComb maxFlows;
+        FlowComb deficitcities;
+        RmResult rmPS;
+        RmResult rmPipelines;
 
 		Graph network;
         std::unordered_map<std::string, Reservoir *> reservoirs;
@@ -46,7 +47,7 @@ class Manager {
         std::pair<AnaliseResult, AnaliseResult> balanceNetwork();
 
         // Reliability
-        std::unordered_set<Vertex*> removeReservoir(Reservoir* reservoir);
+        std::vector<std::tuple<Vertex *, int, int>> removeReservoir(Reservoir* reservoir);
         void maintenancePS();
         void maintenancePipes();
 

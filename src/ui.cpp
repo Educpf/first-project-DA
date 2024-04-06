@@ -23,6 +23,8 @@ UI::UI(bool useSmallSet) : manager(Manager(useSmallSet))
 	manager.loadPipes();
 	manager.maxFlowCities();
 	manager.citiesInDeficit();
+	manager.maintenancePipes();
+	manager.maintenancePS();
 	auto end = std::chrono::high_resolution_clock::now();
 	loadtime = std::chrono::duration<double>(end - start).count();
 	mainMenu();

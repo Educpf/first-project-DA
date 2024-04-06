@@ -58,11 +58,11 @@ void UI::removeReservoirMenu()
 		} 
 		else if (selected)
 		{
-			std::unordered_set<Vertex *> answ = manager.removeReservoir(selected);
+			std::vector<std::tuple<Vertex *, int, int>> answ = manager.removeReservoir(selected);
 			std::cout << "Affected sites when removing \"" << selected->getCode() << " " << selected->getName() << "\":\n\n";
 			for (auto vtx : answ)
 			{
-				Element *e = vtx->getInfo();
+				Element *e = std::get<0>(vtx)->getInfo();
 				std::cout << e->getCode() << "\n";
 			}
 			std::cout << "\nTotal count: " << answ.size() << "\n";
