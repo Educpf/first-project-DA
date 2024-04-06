@@ -7,9 +7,6 @@ std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reser
 {
     CalculateMaxFlow();
 
-	// Force re-calculation of max flow in some menus
-	totalNetworkFlow = -1;
-
     // Clean all the edges
     for (Vertex* v : network.getVertexSet()){
         for (Edge* e : v->getAdj()){
@@ -213,20 +210,17 @@ void Manager::maintenancePS()
         network.addVertex(station);
 
         for(const auto& [v,w] : outgoing){
-            /*if(incoming.find(v) != incoming.end()){
+            if(incoming.find(v) != incoming.end()){
                 network.addBidirectionalEdge(v,station,w);
                 incoming.erase(v);
             }
-            else*/
+            else
 			network.addEdge(station,v,w);
         }
         for(const auto& [v,w] : incoming){
             network.addEdge(v,station,w);
         }
     }
-
-	// Force re-calculation of max flow in some menus
-	totalNetworkFlow = -1;
 
     /**
     for(auto k : rmPS){
@@ -285,12 +279,8 @@ void Manager::maintenancePipes()
             if(reverse) network.addBidirectionalEdge(orig,dest,w);
             else network.addEdge(orig,dest,w);
             
-
         }
     }
-
-	// Force re-calculation of max flow in some menus
-	totalNetworkFlow = -1;
 	
     /**
     cout << endl << endl;
