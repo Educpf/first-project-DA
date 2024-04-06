@@ -2,9 +2,12 @@
 #include <forward_list>
 using namespace std;
 
-void Manager::removeReservoir(Reservoir* reservoir){
-
+std::unordered_set<Vertex*> Manager::removeReservoir(Reservoir* reservoir)
+{
     CalculateMaxFlow();
+
+	// Force re-calculation of max flow in some menus
+	totalNetworkFlow = -1;
 
     // Clean all the edges
     for (Vertex* v : network.getVertexSet()){
@@ -36,7 +39,6 @@ void Manager::removeReservoir(Reservoir* reservoir){
             }
         }
     }
-
 
     // Detect which stations/cities are the connecting ones
     for (Vertex* station : affectedStations){
@@ -139,32 +141,24 @@ void Manager::removeReservoir(Reservoir* reservoir){
         network.addEdge(superSource, v->getInfo(), capacity);
     }
 
-    affectedStations.insert(network.findVertex(superSink));
-    affectedStations.insert(network.findVertex(superSource));
+    auto ssiIter = affectedStations.insert(network.findVertex(superSink));
+    auto ssoIter = affectedStations.insert(network.findVertex(superSource));
 
     EdmondsKarp(superSource, superSink, affectedStations);
-
-
-    // Calculate the total flow in another function
-    double total = 0;
-    Vertex* superSinkVertex = network.findVertex(superSink);
-    for (const auto& [code, c] : cities){
-        for (Edge* e :network.findVertex(c)->getIncoming()){
-            total+= e->getFlow();
-        }
-    }
-
-    // For testing porpuses
-    std::cout << "Max flow obtained was: " << total << std::endl;
 
     // Clean network
     network.removeVertex(superSource);
     network.removeVertex(superSink);
+	affectedStations.erase(ssiIter.first);
+	affectedStations.erase(ssoIter.first);
+
     delete superSink;
     delete superSource;
+	return affectedStations;
 }
 
-void Manager::maintenancePS(){
+void Manager::maintenancePS()
+{
     int n = 0;
     for (const auto& [stationCode,station] : this->stations){
         unordered_map<string,int> flowswithoutps;
@@ -214,6 +208,9 @@ void Manager::maintenancePS(){
             network.addEdge(v,station,w);
         }
     }
+
+	// Force re-calculation of max flow in some menus
+	totalNetworkFlow = -1;
     /**
     for(auto k : rmPS){
         cout << k.first << ": " << k.second.size() <<endl;
@@ -227,7 +224,8 @@ void Manager::maintenancePS(){
 
 
 
-void Manager::maintenancePipes(){
+void Manager::maintenancePipes()
+{
     int n = 0;
     for(auto element : network.getVertexSet()){
         for(auto edge : element->getAdj()){
@@ -276,6 +274,10 @@ void Manager::maintenancePipes(){
 
         }
     }
+
+	// Force re-calculation of max flow in some menus
+	totalNetworkFlow = -1;
+	
     /**
     cout << endl << endl;
     for(auto k : rmPipelines){

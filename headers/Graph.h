@@ -284,11 +284,7 @@ inline void Edge::setFlow(double flow) {
 
 /********************** Graph  ****************************/
 
-inline Graph::~Graph() {
-	for (auto i : vertexSet) {
-		delete i;
-	}
-}
+inline Graph::~Graph() {}
 
 inline int Graph::getNumVertex() const {
     return vertexSet.size();

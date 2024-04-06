@@ -78,6 +78,9 @@ void UI::mainMenu()
 				case '3':
 					balancedFlowMenu();
 					break;
+				case '4':
+					removeReservoirMenu();
+					break;
 				case 't':
 				case 'T':
 					testMenu();

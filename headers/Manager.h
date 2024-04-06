@@ -18,7 +18,7 @@ class Manager {
 		bool useSmallSet;
 
     public:
-		double totalNetworkFlow;
+		double totalNetworkFlow = -1;
 		std::unordered_map<std::string, int> maxFlows;
         std::unordered_map<std::string, int> deficitcities;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPS;
@@ -46,7 +46,7 @@ class Manager {
         std::pair<AnaliseResult, AnaliseResult> balanceNetwork();
 
         // Reliability
-        void removeReservoir(Reservoir* reservoir);
+        std::unordered_set<Vertex*> removeReservoir(Reservoir* reservoir);
         void maintenancePS();
         void maintenancePipes();
 
@@ -61,6 +61,8 @@ inline Manager::~Manager()
 {
 	for (const auto& [code, e] : allElements)
 		delete e;
+	for (auto vtx : network.getVertexSet())
+		delete vtx;
 }
 
 #endif //FIRST_PROJECT_DA_MANAGER_H

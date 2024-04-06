@@ -22,6 +22,7 @@ class UI {
 		void maxFlowMenu();
 		void meetDemandsMenu();
 		void balancedFlowMenu();
+		void removeReservoirMenu();
 
 		// Utils
 		void testMenu();

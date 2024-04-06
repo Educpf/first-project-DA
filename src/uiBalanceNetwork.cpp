@@ -6,6 +6,9 @@
 
 void UI::balancedFlowMenu()
 {
+	if (manager.totalNetworkFlow == -1)
+		manager.maxFlowCities();
+	
 	std::string str;
 	std::pair<AnaliseResult, AnaliseResult> res = manager.balanceNetwork();
 
