@@ -63,7 +63,8 @@ void UI::removeReservoirMenu()
 			for (auto vtx : answ)
 			{
 				Element *e = std::get<0>(vtx)->getInfo();
-				std::cout << e->getCode() << "\n";
+				std::cout << e->getCode() 
+				<< "\n Old flow: " <<  std::get<1>(vtx) << "\n New flow: " << "\n";
 			}
 			std::cout << "\nTotal count: " << answ.size() << "\n";
 		}
