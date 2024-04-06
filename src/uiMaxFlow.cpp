@@ -100,7 +100,7 @@ void UI::maxFlowMenu()
 		} 
 		else
 		{
-			std::cout << "The search returned for " << str << " no results.\n";
+			std::cout << "The search for " << str << " returned no results.\n";
 		}
 
 		std::cout
@@ -173,6 +173,7 @@ void UI::maxFlowMenu()
 		{
 			lst = getSearchVertexes(manager, str);
 			search = str;
+			totalPages = (lst.size() + 9 - (lst.size() - 1) % 10) / 10;
 			continue;
 		}
 

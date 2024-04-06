@@ -3,8 +3,10 @@ project(first_project_DA)
 
 set(CMAKE_CXX_STANDARD 17)
 
+if (UNIX)
 add_compile_options(-fsanitize=address)
 add_link_options(-fsanitize=address)
+endif (UNIX)
 
 add_executable(first_project_DA
         src/ui.cpp
