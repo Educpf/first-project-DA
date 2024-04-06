@@ -87,6 +87,7 @@ void UI::mainMenu()
 					removePSMenu();
 					break;
 				case '6':
+					removePipeMenu();
 					break;
 				case 't':
 				case 'T':

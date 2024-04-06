@@ -24,6 +24,7 @@ class UI {
 		void balancedFlowMenu();
 		void removeReservoirMenu();
 		void removePSMenu();
+		void removePipeMenu();
 
 		// Utils
 		void testMenu();

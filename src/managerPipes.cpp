@@ -169,6 +169,7 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
 	double variance = 0;
 	double mean = 0;
     int count = 0;
+	double maxDiff = std::numeric_limits<double>::min();
     double totalEmpty = 0;
 
     for (Vertex* v : network.getVertexSet()) {
@@ -177,6 +178,8 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
             if (e->getFlow() == 0) totalEmpty++;
             totalPeso += e->getWeight();
             double diff = e->getWeight() - e->getFlow();
+			if (diff > maxDiff)
+				maxDiff = diff;
             sum += diff;
             biggest = std::max(biggest, diff);
             if (!e->getReverse() || !e->getReverse()->getFlow()) {
@@ -206,5 +209,5 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
     std::cout << "Total weight: " << totalPeso << '\n';
     std::cout << "Total empty: " << totalEmpty << '\n';
     std::cout << "Total output: " << totalOutput << '\n';*/
-    return {mean, variance, biggest - smallest};
+    return {mean, variance, maxDiff};
 }
