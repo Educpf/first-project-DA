@@ -225,7 +225,7 @@ void Manager::maintenancePS()
             network.addEdge(v,station,w);
     }
 
-    /**
+    /*
     for(auto k : rmPS){
         cout << k.first << ": " << k.second.size() <<endl;
         for(auto n : k.second){
