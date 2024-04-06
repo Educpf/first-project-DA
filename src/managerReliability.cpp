@@ -192,8 +192,8 @@ void Manager::maintenancePS(){
         }
         unordered_map<string,int> affectedcities;
         for(const auto& [cityCode,city] : this->cities){
-            if(flowswithoutps[cityCode] < maxflows[cityCode]){
-                affectedcities[cityCode] = flowswithoutps[cityCode]-maxflows[cityCode];
+            if(flowswithoutps[cityCode] < maxFlows[cityCode]){
+                affectedcities[cityCode] = flowswithoutps[cityCode]-maxFlows[cityCode];
             }
         }
         if(!affectedcities.empty()){
@@ -261,8 +261,8 @@ void Manager::maintenancePipes(){
             }
             unordered_map<string,int> affectedcities;
             for(const auto& [cityCode,city] : this->cities){
-                if(flowswithoutpipe[cityCode] < maxflows[cityCode]){
-                    affectedcities[cityCode] = flowswithoutpipe[cityCode]-maxflows[cityCode];
+                if(flowswithoutpipe[cityCode] < maxFlows[cityCode]){
+                    affectedcities[cityCode] = flowswithoutpipe[cityCode]-maxFlows[cityCode];
                 }
             }
 

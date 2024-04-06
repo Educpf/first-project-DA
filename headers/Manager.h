@@ -19,12 +19,12 @@ class Manager {
         std::unordered_map<std::string, City *> cities;
 		std::unordered_map<std::string, Element *> allElements;
 
-        std::unordered_map<std::string, int> maxflows;
+    public:
+		std::unordered_map<std::string, int> maxFlows;
         std::unordered_map<std::string, int> deficitcities;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPS;
         std::unordered_map<std::string, std::unordered_map<std::string, int>> rmPipelines;
 
-    public:
 		inline Manager(bool useSmallSet) : useSmallSet(useSmallSet) {};
         // Loaders
         void loadReservoirs();
@@ -41,8 +41,8 @@ class Manager {
 
         // Basic Service Metrics
         double CalculateMaxFlow();
-        void maxflowcities();
-        void citiesindeficit();
+        void maxFlowCities();
+        void citiesInDeficit();
         void balanceNetwork();
 
         // Reliability

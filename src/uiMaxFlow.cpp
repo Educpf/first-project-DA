@@ -18,31 +18,16 @@ bool strFind(const std::string &one, const std::string &two) {
   	return (it != one.end());
 }
 
-std::vector<Vertex *> getSearchVertexes(Graph &graph, std::string searchTerm)
+std::unordered_map<std::string, int> getSearchVertexes(Graph &graph, Manager &manager, std::string searchTerm)
 {
-	std::vector<Vertex *> result;
+	std::unordered_map<std::string, int> result;
 
 	if (searchTerm.empty())
 		return result;
-	for (auto vtx : graph.getVertexSet())
+	for (auto city : manager.getCities())
 	{
-		Element *elem = vtx->getInfo();
-		if (dynamic_cast<Reservoir *>(elem) != nullptr)
-			continue;
-		if (strFind(elem->getCode(), searchTerm))
-		{
-			result.push_back(vtx);
-			continue;
-		}
-		City *city = dynamic_cast<City *>(elem);
-		if (city != nullptr)
-		{
-			if (strFind(city->getName(), searchTerm))
-			{
-				result.push_back(vtx);
-				continue;
-			}
-		}
+		if (strFind(city.second->getName(), searchTerm))
+			result[city.first] = manager.maxFlows[city.first];
 	}
 	return result;
 }
@@ -55,7 +40,7 @@ int getFlow(Vertex *elem)
 	return total;
 }
 
-void saveMaxFlow(std::vector<Vertex *> &lst, int maxFlow)
+void saveMaxFlow(Graph &graph, std::unordered_map<std::string, int> &lst, int maxFlow)
 {
 	std::ofstream out("./maxFlowOutput.txt", std::ofstream::trunc);
 
@@ -70,15 +55,11 @@ void saveMaxFlow(std::vector<Vertex *> &lst, int maxFlow)
 
 	for (auto w : lst)
 	{
-		City *city = dynamic_cast<City *>(w->getInfo());
-		Reservoir *reserv = dynamic_cast<Reservoir *>(w->getInfo());
+		City *city = dynamic_cast<City *>(graph.findVertexByCode(w.first)->getInfo());
 
-		out << w->getInfo()->getCode();
-		if (city != nullptr) 
-		out << " (" << city->getName() << ")";
-		if (reserv != nullptr) 
-		out << " (" << reserv->getName() << " / " << reserv->getMunicipality() << ")";
-		out << " - " << getFlow(w) << "\n";
+		if (city == nullptr)
+			continue;
+		out << city->getCode() << " (" << city->getName() << ")" << " - " << w.second << "\n";
 	}
 }
 
@@ -86,13 +67,7 @@ void UI::maxFlowMenu()
 {
 	int totalFlow = manager.CalculateMaxFlow();
 	Graph graph = manager.getNetwork();
-	std::vector<Vertex *> lst;
-	for (Vertex *vtx : graph.getVertexSet())
-	{
-		if (dynamic_cast<Reservoir *>(vtx->getInfo()) != nullptr)
-			continue;
-		lst.push_back(vtx);
-	}
+	std::unordered_map<std::string, int> lst = manager.maxFlows;
 
 	size_t count = 0;
 	std::string str;
@@ -106,24 +81,19 @@ void UI::maxFlowMenu()
 		<< "Service Metrics\n"
 		<< "\n"
 		<< "The total max flow for the network is: " << totalFlow << "\n\n"
-		<< "Max flow for all elements" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
+		<< "Max flow for all cities" << (search.empty() ? "" : " containing \"" + search + "\"") << ":\n\n";
 		if (!lst.empty())
 		{
 			for (size_t i = count; i < std::min(count + 10, lst.size()); i++)
 			{
 				auto it = lst.begin();
 				std::advance(it, i);
-				
-				Vertex *w = *it;
-				City *city = dynamic_cast<City *>(w->getInfo());
-				Reservoir *reserv = dynamic_cast<Reservoir *>(w->getInfo());
-
-				std::cout << w->getInfo()->getCode();
+				Element *x = graph.findVertexByCode(it->first)->getInfo();
+				City *city = dynamic_cast<City *>(x);
+				std::cout << x->getCode();
 				if (city != nullptr) 
 					std::cout << " (" << city->getName() << ")";
-				if (reserv != nullptr) 
-					std::cout << " (" << reserv->getName() << " / " << reserv->getMunicipality() << ")";
-				std::cout << " - " << getFlow(w) << "\n";
+				std::cout << " - " << it->second << "\n";
 			}
 			std::cout << "\nPage " << (count + 10 - count % 10) / 10 << " of " 
 						<< totalPages << "\n";
@@ -170,7 +140,7 @@ void UI::maxFlowMenu()
 		}
 		if (str == "save")
 		{
-			saveMaxFlow(lst, totalFlow);
+			saveMaxFlow(graph, lst, totalFlow);
 			CLEAR;
 			std::cout << "Saved current search to \"./maxFlowOutput.txt\".\nPress ENTER to continue...";
 			while (std::cin.get() != '\n') { }
@@ -195,19 +165,13 @@ void UI::maxFlowMenu()
 		if (str == "reset")
 		{
 			search = "";
-			lst.clear();
-			for (Vertex *vtx : graph.getVertexSet())
-			{
-				if (dynamic_cast<Reservoir *>(vtx->getInfo()) != nullptr)
-					continue;
-				lst.push_back(vtx);
-			}
+			lst = manager.maxFlows;
 			continue;
 		}
 
 		if (!str.empty())
 		{
-			lst = getSearchVertexes(graph, str);
+			lst = getSearchVertexes(graph, manager, str);
 			search = str;
 			continue;
 		}
