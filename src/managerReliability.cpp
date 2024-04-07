@@ -3,6 +3,14 @@
 #include <tuple>
 using namespace std;
 
+/**
+ * This algorithm checks save which elements could potentially be affected
+ * by the removal of a specific Reservoir, puts them in a set and runs the
+ * max flow algorithm for this elements. In the end, it check which flows changes
+ * for the potential affected element list.
+ * @note Complexity: O(VE^2)
+ * @return Vector of tuple <Vertex, old flow, new flow>
+*/
 std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reservoir* reservoir)
 {
     CalculateMaxFlow();
@@ -170,6 +178,12 @@ std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reser
 	return result;
 }
 
+/**
+ * For each station, this algorithm removes it and edges related to it from the network
+ * and runs the Max flow algorithm on the modified network.
+ * After, it compares flows to check which cities are affected by the removal
+ * @note Complexity: O(NVE^2) where N is the number of stations
+*/
 void Manager::maintenancePS()
 {
     int n = 0;
@@ -226,6 +240,12 @@ void Manager::maintenancePS()
     }
 }
 
+/**
+ * For each pipe/edge, this algorithm removes it from the network
+ * and runs the Max flow algorithm on the modified network.
+ * After, it compares flows to check which cities are affected by the removal
+ * @note Complexity: O(NV^2E^3) where N is the number of stations
+*/
 void Manager::maintenancePipes()
 {
     int n = 0;
@@ -276,7 +296,6 @@ void Manager::maintenancePipes()
 				network.addBidirectionalEdge(orig,dest,w);
             else 
 				network.addEdge(orig,dest,w);
-            
         }
     }
 }

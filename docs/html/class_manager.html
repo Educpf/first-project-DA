@@ -102,14 +102,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a822fcf6a0ff2c69cbba13558ddab9c74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad489d8e7ac2124c3fca1b9b94459a843"><td class="memItemLeft" align="right" valign="top">std::pair&lt; AnaliseResult, AnaliseResult &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#ad489d8e7ac2124c3fca1b9b94459a843">balanceNetwork</a> ()</td></tr>
 <tr class="separator:ad489d8e7ac2124c3fca1b9b94459a843"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00688466859376243d1d82e04c1e041"><td class="memItemLeft" align="right" valign="top"><a id="aa00688466859376243d1d82e04c1e041" name="aa00688466859376243d1d82e04c1e041"></a>
-std::vector&lt; std::tuple&lt; <a class="el" href="class_vertex.html">Vertex</a> *, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>removeReservoir</b> (<a class="el" href="class_reservoir.html">Reservoir</a> *reservoir)</td></tr>
+<tr class="memitem:aa00688466859376243d1d82e04c1e041"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::tuple&lt; <a class="el" href="class_vertex.html">Vertex</a> *, double, double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#aa00688466859376243d1d82e04c1e041">removeReservoir</a> (<a class="el" href="class_reservoir.html">Reservoir</a> *reservoir)</td></tr>
 <tr class="separator:aa00688466859376243d1d82e04c1e041"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae208df66ffdffb6690da087503141d7f"><td class="memItemLeft" align="right" valign="top"><a id="ae208df66ffdffb6690da087503141d7f" name="ae208df66ffdffb6690da087503141d7f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>maintenancePS</b> ()</td></tr>
+<tr class="memitem:ae208df66ffdffb6690da087503141d7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#ae208df66ffdffb6690da087503141d7f">maintenancePS</a> ()</td></tr>
 <tr class="separator:ae208df66ffdffb6690da087503141d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abea70d6312d6a5480a3ffee64a880815"><td class="memItemLeft" align="right" valign="top"><a id="abea70d6312d6a5480a3ffee64a880815" name="abea70d6312d6a5480a3ffee64a880815"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>maintenancePipes</b> ()</td></tr>
+<tr class="memitem:abea70d6312d6a5480a3ffee64a880815"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#abea70d6312d6a5480a3ffee64a880815">maintenancePipes</a> ()</td></tr>
 <tr class="separator:abea70d6312d6a5480a3ffee64a880815"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -303,6 +300,42 @@ std::unordered_map&lt; std::string, <a class="el" href="class_element.html">Elem
 
 </div>
 </div>
+<a id="abea70d6312d6a5480a3ffee64a880815" name="abea70d6312d6a5480a3ffee64a880815"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abea70d6312d6a5480a3ffee64a880815">&#9670;&#160;</a></span>maintenancePipes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Manager::maintenancePipes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>For each pipe/edge, this algorithm removes it from the network and runs the Max flow algorithm on the modified network. After, it compares flows to check which cities are affected by the removal </p><dl class="section note"><dt>Note</dt><dd>Complexity: O(NV^2E^3) where N is the number of stations </dd></dl>
+
+</div>
+</div>
+<a id="ae208df66ffdffb6690da087503141d7f" name="ae208df66ffdffb6690da087503141d7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae208df66ffdffb6690da087503141d7f">&#9670;&#160;</a></span>maintenancePS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Manager::maintenancePS </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>For each station, this algorithm removes it and edges related to it from the network and runs the Max flow algorithm on the modified network. After, it compares flows to check which cities are affected by the removal </p><dl class="section note"><dt>Note</dt><dd>Complexity: O(NVE^2) where N is the number of stations </dd></dl>
+
+</div>
+</div>
 <a id="a38fe4cadc631aabf93b1eb359b7e36c8" name="a38fe4cadc631aabf93b1eb359b7e36c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38fe4cadc631aabf93b1eb359b7e36c8">&#9670;&#160;</a></span>maxFlowCities()</h2>
 
@@ -318,6 +351,26 @@ std::unordered_map&lt; std::string, <a class="el" href="class_element.html">Elem
       </table>
 </div><div class="memdoc">
 <p>Calls CalculateMaxFlow and save the results to an unordered_map inside the class. </p><dl class="section note"><dt>Note</dt><dd>Complexity: O(V * E^2) </dd></dl>
+
+</div>
+</div>
+<a id="aa00688466859376243d1d82e04c1e041" name="aa00688466859376243d1d82e04c1e041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa00688466859376243d1d82e04c1e041">&#9670;&#160;</a></span>removeReservoir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::tuple&lt; <a class="el" href="class_vertex.html">Vertex</a> *, double, double &gt; &gt; Manager::removeReservoir </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_reservoir.html">Reservoir</a> *&#160;</td>
+          <td class="paramname"><em>reservoir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This algorithm checks save which elements could potentially be affected by the removal of a specific <a class="el" href="class_reservoir.html">Reservoir</a>, puts them in a set and runs the max flow algorithm for this elements. In the end, it check which flows changes for the potential affected element list. </p><dl class="section note"><dt>Note</dt><dd>Complexity: O(VE^2) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of tuple &lt;<a class="el" href="class_vertex.html">Vertex</a>, old flow, new flow&gt; </dd></dl>
 
 </div>
 </div>
