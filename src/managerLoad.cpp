@@ -3,6 +3,10 @@
 #include <sstream>
 using namespace std;
 
+/**
+ * Loads all the reservoirs
+ * @note Complexity: O(n) where n is the number of reservoirs
+*/
 void Manager::loadReservoirs()
 {
     std::ifstream file(useSmallSet ? "../dataset/small/Reservoirs_Madeira.csv" : "../dataset/Reservoir.csv");
@@ -36,6 +40,10 @@ void Manager::loadReservoirs()
     }
 }
 
+/**
+ * Loads all the pumping stations
+ * @note Complexity: O(n) where n is the number of pumping stations
+*/
 void Manager::loadStations()
 {
     std::ifstream file(useSmallSet ? "../dataset/small/Stations_Madeira.csv" : "../dataset/Stations.csv");
@@ -66,6 +74,10 @@ void Manager::loadStations()
     }
 }
 
+/**
+ * Loads all the cities
+ * @note Complexity: O(n) where n is the number of cities
+*/
 void Manager::loadCities()
 {
     std::ifstream file(useSmallSet ? "../dataset/small/Cities_Madeira.csv" : "../dataset/Cities.csv");
@@ -99,7 +111,10 @@ void Manager::loadCities()
     }
 }
 
-
+/**
+ * Loads all the pipes / edges of the graph
+ * @note Complexity: O(E)
+*/
 void Manager::loadPipes()
 {
     std::ifstream file(useSmallSet ? "../dataset/small/Pipes_Madeira.csv" : "../dataset/Pipes.csv");

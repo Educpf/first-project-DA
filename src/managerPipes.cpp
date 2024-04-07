@@ -1,8 +1,13 @@
 #include "../headers/Manager.h"
 #include <limits.h>
 
-double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath,
-                                       Vertex*& last) {
+/**
+ * Finds the farthest augmenting path between the source and the sink
+ * @note Complexity: O(n * V * E) where n is the number of reservoirs
+ * @return Flow of the path
+*/
+double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath, Vertex*& last)
+{
     // the values for the final flow
     double finalFlow = 0;
     int actualTopDistance = 0;
@@ -121,7 +126,13 @@ double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath,
     return finalFlow;
 }
 
-std::pair<AnaliseResult, AnaliseResult> Manager::balanceNetwork() {
+/**
+ * Balances the network in order to reduce the variation of capacity/flow in the graph.
+ * @note Complexity: O(E * )
+ * @return Pair of tuples containg stats before and after balancing the network.
+*/
+std::pair<AnaliseResult, AnaliseResult> Manager::balanceNetwork()
+{
     CalculateMaxFlow();
     AnaliseResult initial = AnalyzeBalance();
 
@@ -160,6 +171,11 @@ std::pair<AnaliseResult, AnaliseResult> Manager::balanceNetwork() {
     return {initial, final};
 }
 
+/**
+ * Analizes the balance of a graph.
+ * @note Complexity: O(n * V * E^2), n being the number of reservoirs
+ * @return Tuple about differences between capacity and flow <average, variance, max difference>
+*/
 std::tuple<double, double, double> Manager::AnalyzeBalance() {
     double biggest = std::numeric_limits<double>::min();
     double smallest = std::numeric_limits<double>::max();
@@ -191,7 +207,7 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
     double totalOutput = 0;
     for (const auto& [c, r] : reservoirs){
         for (Edge* e : network.findVertex(r)->getAdj()){
-            totalOutput+=e->getFlow();
+            totalOutput += e->getFlow();
         }
     }
     

@@ -224,16 +224,6 @@ void Manager::maintenancePS()
         for(const auto& [v,w] : incoming)
             network.addEdge(v,station,w);
     }
-
-    /*
-    for(auto k : rmPS){
-        cout << k.first << ": " << k.second.size() <<endl;
-        for(auto n : k.second){
-            cout << n.first << "  " << n.second << endl;
-        }
-    }
-    cout<<rmPS.size();
-    */
 }
 
 void Manager::maintenancePipes()
@@ -289,16 +279,4 @@ void Manager::maintenancePipes()
             
         }
     }
-	
-    
-    /*cout << endl << endl;
-    for(auto k : rmPipelines){
-        cout << k.first << k.second.size() <<endl;
-        for(auto n : k.second){
-            cout << n.first << "  " << n.second << endl;
-        }
-    }
-    cout << rmPipelines.size();
-	exit(0);*/
-    
 }

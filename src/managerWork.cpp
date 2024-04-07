@@ -2,6 +2,11 @@
 #include <limits.h>
 #include <list>
 
+/**
+ * Calculates the Max Flow in the network by using the Edmonds-Kart algorithm.
+ * @note Complexity: O(VE^2)
+ * @return Max flow for the current network
+*/
 double Manager::CalculateMaxFlow()
 {
     // Add super source
@@ -52,6 +57,10 @@ double Manager::CalculateMaxFlow()
     return total;
 }
 
+/**
+ * Edmonds-Karp algorithm.
+ * @note Complexity: O(V * E^2)
+*/
 void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected)
 {
     double new_flow;
@@ -76,6 +85,12 @@ void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered
     }
 }
 
+/**
+ * Breadth-first search used in the Edmonds-Kart algorithm to find 
+ * the shortest path that has available capacity.
+ * @note Complexity: O(V * E)
+ * @return Always returns 0
+*/
 double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected)
 {
     std::queue<std::pair<Vertex*, double>> q;
@@ -115,6 +130,10 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_
     return 0;
 }
 
+/**
+ * Calls CalculateMaxFlow and save the results to an unordered_map inside the class.
+ * @note Complexity: O(V * E^2)
+*/
 void Manager::maxFlowCities()
 { 
     totalNetworkFlow = CalculateMaxFlow();
@@ -129,7 +148,7 @@ void Manager::maxFlowCities()
 
 /**
  * Goes through the resulting map from maxFlowCites to save which cities are in deficit of water.
- * @note Complexity: O(n)
+ * @note Complexity: O(n) where n is the number of cities
 */
 void Manager::citiesInDeficit()
 { 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7emanager_0',['~Manager',['../class_manager.html#a322cad25d7007438b3a043ad02253d29',1,'Manager']]]
+  ['ui_0',['UI',['../class_u_i.html#a910458149301e52108696988cf9d4d5f',1,'UI']]]
 ];
