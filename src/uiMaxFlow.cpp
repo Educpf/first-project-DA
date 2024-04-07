@@ -35,6 +35,8 @@ std::unordered_map<std::string, int> getSearchVertexes(Manager &manager, std::st
 	{
 		if (UI::strFind(city.second->getName(), searchTerm))
 			result[city.first] = manager.maxFlows[city.first];
+		else if (UI::strFind(city.second->getCode(), searchTerm))
+			result[city.first] = manager.maxFlows[city.first];
 	}
 	return result;
 }
