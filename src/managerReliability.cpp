@@ -297,11 +297,6 @@ void Manager::maintenancePipes()
                 string code = orig->getCode() + " --- " + dest->getCode();
                 rmPipelines[code] = affectedcities;
             }
-
-            if(reverse)
-				network.addBidirectionalEdge(orig,dest,w);
-            else 
-				network.addEdge(orig,dest,w);
         }
     }
 }
