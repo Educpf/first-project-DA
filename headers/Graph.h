@@ -102,7 +102,6 @@ public:
     int getNumVertex() const;
     std::vector<Vertex *> getVertexSet() const;
 	Graph getCopy();
-	void deleteGraph();
 protected:
     std::vector<Vertex *> vertexSet;
 	std::unordered_map<std::string, Vertex *> vertexMap;
@@ -113,6 +112,10 @@ protected:
     int findVertexIdx(const Element *in) const;
 };
 
+/**
+ * Creates a copy of the graph
+ * @note Complexity: O(V + E)
+*/
 inline Graph Graph::getCopy()
 {
 	Graph result;

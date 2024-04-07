@@ -94,8 +94,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a003cf550af8fd0f1e29dc2df9fc75a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f278d9f6fd8d6a8dd565cbcb8dd1137"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#a1f278d9f6fd8d6a8dd565cbcb8dd1137">loadPipes</a> ()</td></tr>
 <tr class="separator:a1f278d9f6fd8d6a8dd565cbcb8dd1137"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46f3f8b98106fef089073b495d08a73c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#a46f3f8b98106fef089073b495d08a73c">CalculateMaxFlow</a> ()</td></tr>
-<tr class="separator:a46f3f8b98106fef089073b495d08a73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add8808216cee9d5537d8e5870207b92c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#add8808216cee9d5537d8e5870207b92c">CalculateMaxFlow</a> (<a class="el" href="class_graph.html">Graph</a> &amp;network)</td></tr>
+<tr class="separator:add8808216cee9d5537d8e5870207b92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38fe4cadc631aabf93b1eb359b7e36c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#a38fe4cadc631aabf93b1eb359b7e36c8">maxFlowCities</a> ()</td></tr>
 <tr class="separator:a38fe4cadc631aabf93b1eb359b7e36c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a822fcf6a0ff2c69cbba13558ddab9c74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_manager.html#a822fcf6a0ff2c69cbba13558ddab9c74">citiesInDeficit</a> ()</td></tr>
@@ -191,8 +191,8 @@ std::unordered_map&lt; std::string, <a class="el" href="class_element.html">Elem
 
 </div>
 </div>
-<a id="a46f3f8b98106fef089073b495d08a73c" name="a46f3f8b98106fef089073b495d08a73c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46f3f8b98106fef089073b495d08a73c">&#9670;&#160;</a></span>CalculateMaxFlow()</h2>
+<a id="add8808216cee9d5537d8e5870207b92c" name="add8808216cee9d5537d8e5870207b92c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add8808216cee9d5537d8e5870207b92c">&#9670;&#160;</a></span>CalculateMaxFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -200,7 +200,8 @@ std::unordered_map&lt; std::string, <a class="el" href="class_element.html">Elem
         <tr>
           <td class="memname">double Manager::CalculateMaxFlow </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_graph.html">Graph</a> &amp;&#160;</td>
+          <td class="paramname"><em>network</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -369,7 +370,7 @@ std::unordered_map&lt; std::string, <a class="el" href="class_element.html">Elem
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This algorithm checks save which elements could potentially be affected by the removal of a specific <a class="el" href="class_reservoir.html">Reservoir</a>, puts them in a set and runs the max flow algorithm for this elements. In the end, it check which flows changes for the potential affected element list. </p><dl class="section note"><dt>Note</dt><dd>Complexity: O(VE^2) </dd></dl>
+<p>This algorithm checks save which elements could potentially be affected by the removal of a specific <a class="el" href="class_reservoir.html">Reservoir</a>, puts them in a set and runs the max flow algorithm for these elements. In the end, it check which flows changes for the potential affected element list. </p><dl class="section note"><dt>Note</dt><dd>Complexity: O(VE^2) </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>Vector of tuple &lt;<a class="el" href="class_vertex.html">Vertex</a>, old flow, new flow&gt; </dd></dl>
 
 </div>
