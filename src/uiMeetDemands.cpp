@@ -31,8 +31,7 @@ void UI::meetDemandsMenu()
 				auto it = lst.begin();
 				std::advance(it, i);
 				Element *x = manager.network.findVertexByCode(it->first)->getInfo();
-				/*if (lst[x->getCode()] == 0)
-					continue;*/
+
 				std::cout << x->getCode();
 				City *city = dynamic_cast<City *>(x);
 				if (city != nullptr) 

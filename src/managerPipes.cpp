@@ -180,19 +180,13 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
     double biggest = std::numeric_limits<double>::min();
     double smallest = std::numeric_limits<double>::max();
     double sum = 0;
-    double numEdges = 173;
-    double totalPeso = 0;
+    double numEdges = numberEdges;
 	double variance = 0;
 	double mean = 0;
-    int count = 0;
 	double maxDiff = std::numeric_limits<double>::min();
-    double totalEmpty = 0;
 
     for (Vertex* v : network.getVertexSet()) {
         for (Edge* e : v->getAdj()) {
-            if (e->getFlow() < 0) count++;
-            if (e->getFlow() == 0) totalEmpty++;
-            totalPeso += e->getWeight();
             double diff = e->getWeight() - e->getFlow();
 			if (diff > maxDiff)
 				maxDiff = diff;
@@ -204,13 +198,6 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
         }
     }
 
-    double totalOutput = 0;
-    for (const auto& [c, r] : reservoirs){
-        for (Edge* e : network.findVertex(r)->getAdj()){
-            totalOutput += e->getFlow();
-        }
-    }
-    
 	mean = sum / numEdges;
 	for (Vertex *v : network.getVertexSet())
 	{
@@ -220,10 +207,5 @@ std::tuple<double, double, double> Manager::AnalyzeBalance() {
         }
 	}
 	variance = variance / numEdges;
-    /*std::cout << "smallest: " << smallest << '\n';
-    std::cout << "Pipes negativos: " << count << '\n';
-    std::cout << "Total weight: " << totalPeso << '\n';
-    std::cout << "Total empty: " << totalEmpty << '\n';
-    std::cout << "Total output: " << totalOutput << '\n';*/
     return {mean, variance, maxDiff};
 }

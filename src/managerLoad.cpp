@@ -138,6 +138,7 @@ void Manager::loadPipes()
             getline(ss, capacity, ',');
             getline(ss, direction, '\r');
 
+            numberEdges++;
             if (direction == "0") 
 				network.addBidirectionalEdge(allElements[source], allElements[destination], stoi(capacity));
             else

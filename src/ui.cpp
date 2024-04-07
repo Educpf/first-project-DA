@@ -48,8 +48,7 @@ void UI::mainMenu()
     {
         CLEAR;
         std::cout 
-		//<< "Flows\n"
-        //<< "\n"
+
 #ifdef _linux__
         << "Welcome " << getenv("USER") << "!\n"
 #else
@@ -117,7 +116,7 @@ void UI::mainMenu()
 void UI::helpMsg(std::string error, std::string usage)
 {
 	CLEAR;
-	//std::cout << "Flows\n\n";
+	
 	if (error != "" && usage != "") {
 		std::cout << "Invalid operation!\n"
 				  << "\n Problem: " << error

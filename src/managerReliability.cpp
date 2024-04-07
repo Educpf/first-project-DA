@@ -128,7 +128,6 @@ std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reser
     // Connect superSource to the different border Vertices
     for (Vertex* v: borderVertices){
 
-        // TODO:  Maybe substitute for function inside Vertex that returns its type
         std::string code = v->getInfo()->getCode();
         double capacity;
         switch (code[0])
@@ -196,7 +195,7 @@ void Manager::maintenancePS()
         auto networkStation = network.findVertex(station);
 
         temp.removeVertex(station);
-        // cout << n++ << ": ";
+        
         CalculateMaxFlow(temp);  //edmonds
         for(const auto& [cityCode, city] : this->cities)
 		{
@@ -210,7 +209,7 @@ void Manager::maintenancePS()
         for(const auto& [cityCode,city] : this->cities)
 		{
             if(flowswithoutps[cityCode] < maxFlows[cityCode])
-                affectedcities[cityCode] = flowswithoutps[cityCode] /*- maxFlows[cityCode]*/;
+                affectedcities[cityCode] = flowswithoutps[cityCode];
         }
 
         if(!affectedcities.empty())

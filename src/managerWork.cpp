@@ -33,14 +33,14 @@ double Manager::CalculateMaxFlow(Graph &network)
         v->setPath(nullptr);
     }
 
-    std::unordered_set<Vertex*> coiso;
+    std::unordered_set<Vertex*> affected;
     for (auto e : allElements){
-        coiso.insert(network.findVertex(e.second));
+        affected.insert(network.findVertex(e.second));
     }
-    coiso.insert(network.findVertex(superSource));
-    coiso.insert(network.findVertex(superSink));
+    affected.insert(network.findVertex(superSource));
+    affected.insert(network.findVertex(superSink));
 
-    EdmondsKarp(network, superSource, superSink, coiso);
+    EdmondsKarp(network, superSource, superSink, affected);
 
     double total = 0;
     Vertex* superSinkVertex = network.findVertex(superSink);
@@ -152,7 +152,6 @@ void Manager::maxFlowCities()
 */
 void Manager::citiesInDeficit()
 { 
-    std::unordered_map<std::string, int> result;
     for (const auto& [code, city] : this->cities)
 	{
     	int maxFlowCity = maxFlows[code];

@@ -21,6 +21,7 @@ typedef std::unordered_map<std::string, std::unordered_map<std::string, int>> Rm
 class Manager {
     private:
 		bool useSmallSet;
+        double numberEdges = 0;
 
     public:
 		double totalNetworkFlow = -1;
