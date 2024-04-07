@@ -7,7 +7,7 @@
  * @note Complexity: O(VE^2)
  * @return Max flow for the current network
 */
-double Manager::CalculateMaxFlow()
+double Manager::CalculateMaxFlow(Graph &network)
 {
     // Add super source
     Element* superSource = new Element(0, "SS");
@@ -40,7 +40,7 @@ double Manager::CalculateMaxFlow()
     coiso.insert(network.findVertex(superSource));
     coiso.insert(network.findVertex(superSink));
 
-    EdmondsKarp(superSource, superSink, coiso);
+    EdmondsKarp(network, superSource, superSink, coiso);
 
     double total = 0;
     Vertex* superSinkVertex = network.findVertex(superSink);
@@ -61,14 +61,14 @@ double Manager::CalculateMaxFlow()
  * Edmonds-Karp algorithm.
  * @note Complexity: O(V * E^2)
 */
-void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected)
+void Manager::EdmondsKarp(Graph &network, Element* source, Element* target, const std::unordered_set<Vertex*>& affected)
 {
     double new_flow;
 
     auto sc = network.findVertex(source);
     auto tg = network.findVertex(target);
 
-    while ((new_flow = EdmondsBFS(sc, tg, affected))){
+    while ((new_flow = EdmondsBFS(network, sc, tg, affected))){
         Vertex* node = tg;
         while (node != sc){
             Vertex* next;
@@ -91,7 +91,7 @@ void Manager::EdmondsKarp(Element* source, Element* target, const std::unordered
  * @note Complexity: O(V * E)
  * @return Always returns 0
 */
-double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected)
+double Manager::EdmondsBFS(Graph &network, Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected)
 {
     std::queue<std::pair<Vertex*, double>> q;
     q.push({source,std::numeric_limits<double>::max()});
@@ -136,7 +136,7 @@ double Manager::EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_
 */
 void Manager::maxFlowCities()
 { 
-    totalNetworkFlow = CalculateMaxFlow();
+    totalNetworkFlow = CalculateMaxFlow(network);
     for (const auto& [code, city] : this->cities)
 	{
     	int flow = 0;

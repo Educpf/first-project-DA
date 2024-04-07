@@ -46,7 +46,7 @@ void UI::removePipeMenu()
 		<< "Reliability - Temporary removal of a pipe line\n"
 		<< "\n"
 		<< "By removing X -- Y pipeline, the following cities don't have their demands met:\n"
-		<< "(showing " << (search.empty() ? "all results)" : "results for " + search)
+		<< "(showing " << (search.empty() ? "all results)" : "results for " + search + ")")
 		<< "\n\n";
 		if (!lst.empty())
 		{

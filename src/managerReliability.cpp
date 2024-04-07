@@ -6,14 +6,14 @@ using namespace std;
 /**
  * This algorithm checks save which elements could potentially be affected
  * by the removal of a specific Reservoir, puts them in a set and runs the
- * max flow algorithm for this elements. In the end, it check which flows changes
+ * max flow algorithm for these elements. In the end, it check which flows changes
  * for the potential affected element list.
  * @note Complexity: O(VE^2)
  * @return Vector of tuple <Vertex, old flow, new flow>
 */
 std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reservoir* reservoir)
 {
-    CalculateMaxFlow();
+    CalculateMaxFlow(network);
 
     // Clean all the edges
     for (Vertex* v : network.getVertexSet()){
@@ -150,7 +150,7 @@ std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reser
     auto ssiIter = affectedStations.insert(network.findVertex(superSink));
     auto ssoIter = affectedStations.insert(network.findVertex(superSource));
 
-    EdmondsKarp(superSource, superSink, affectedStations);
+    EdmondsKarp(network, superSource, superSink, affectedStations);
 
     // Clean network
     network.removeVertex(superSource);
@@ -187,25 +187,21 @@ std::vector<std::tuple<Vertex *, double, double>> Manager::removeReservoir(Reser
 void Manager::maintenancePS()
 {
     int n = 0;
-    for (const auto& [stationCode, station] : this->stations){
+    for (const auto& [stationCode, station] : this->stations)
+	{
+		Graph temp = network.getCopy();
         unordered_map<string,int> flowswithoutps;
         unordered_map<Element*,double> outgoing, incoming;
 
         auto networkStation = network.findVertex(station);
 
-        for(auto outedge : networkStation->getAdj())
-            outgoing[outedge->getDest()->getInfo()] = outedge->getWeight();
-
-        for(auto inedge : networkStation->getIncoming())
-            incoming[inedge->getOrig()->getInfo()] = inedge->getWeight();
-
-        network.removeVertex(station);
+        temp.removeVertex(station);
         // cout << n++ << ": ";
-        CalculateMaxFlow();  //edmonds
+        CalculateMaxFlow(temp);  //edmonds
         for(const auto& [cityCode, city] : this->cities)
 		{
             int flow = 0;
-            for(auto in : network.findVertex(city)->getIncoming())
+            for(auto in : temp.findVertex(city)->getIncoming())
                 flow += in->getFlow();
             flowswithoutps[cityCode] = flow;
         }
@@ -222,21 +218,12 @@ void Manager::maintenancePS()
             rmPS[stationCode] = affectedcities;
         }
         
-        network.addVertex(station);
-
-        for(const auto& [v,w] : outgoing)
+		for (auto vtx : temp.getVertexSet())
 		{
-            if(incoming.find(v) != incoming.end())
-			{
-                network.addBidirectionalEdge(v,station,w);
-                incoming.erase(v);
-            }
-            else
-				network.addEdge(station,v,w);
-        }
-
-        for(const auto& [v,w] : incoming)
-            network.addEdge(v,station,w);
+			for (auto edg : vtx->getAdj())
+				delete edg;
+			delete vtx;
+		}
     }
 }
 
@@ -249,37 +236,56 @@ void Manager::maintenancePS()
 void Manager::maintenancePipes()
 {
     int n = 0;
-    for(auto element : network.getVertexSet()){
-        for(auto edge : element->getAdj()){
+    for(auto element : network.getVertexSet())
+	{
+        for(auto edge : element->getAdj())
+		{
+			Graph temp = network.getCopy();
+
             Element* orig = edge->getOrig()->getInfo();
             Element* dest = edge->getDest()->getInfo();
             double w = edge->getWeight();
             bool reverse = false;
-            if(edge->getReverse() != nullptr){
+
+            if(edge->getReverse() != nullptr)
+			{
                 string code = dest->getCode() + " --- " + orig->getCode();
-                if(rmPipelines.find(code) != rmPipelines.end()){
-                    continue;
-                }
-                else{
-                    network.removeEdge(edge->getDest()->getInfo(),edge->getOrig()->getInfo());
-                    reverse = true; 
-                }
+                if(rmPipelines.find(code) != rmPipelines.end())
+				{
+					for (auto vtx : temp.getVertexSet())
+					{
+						for (auto edg : vtx->getAdj())
+							delete edg;
+						delete vtx;
+					}
+					continue;
+				}
+                    
+                temp.removeEdge(edge->getDest()->getInfo(),edge->getOrig()->getInfo());
+                reverse = true; 
             }
-            network.removeEdge(edge->getOrig()->getInfo(),edge->getDest()->getInfo());
+            temp.removeEdge(edge->getOrig()->getInfo(),edge->getDest()->getInfo());
         
             unordered_map<string,int> flowswithoutpipe;
             unordered_map<Element*,double> incoming;
 
-            CalculateMaxFlow();  //edmonds
+            CalculateMaxFlow(temp);  //edmonds
             for (const auto& [cityCode,city] : this->cities)
 			{
                 int flow = 0;
-                for(auto incoming : network.findVertex(city)->getIncoming())
+                for(auto incoming : temp.findVertex(city)->getIncoming())
                     flow += incoming->getFlow();
                 flowswithoutpipe[cityCode] = flow;
             }
 
-            unordered_map<string,int> affectedcities;
+			for (auto vtx : temp.getVertexSet())
+			{
+				for (auto edg : vtx->getAdj())
+					delete edg;
+				delete vtx;
+			}
+
+            unordered_map<string, int> affectedcities;
             for (const auto& [cityCode,city] : this->cities)
 			{
                 if (flowswithoutpipe[cityCode] < maxFlows[cityCode])

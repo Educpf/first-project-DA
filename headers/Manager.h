@@ -45,7 +45,7 @@ class Manager {
         void loadPipes();
 
         // Basic Service Metrics
-        double CalculateMaxFlow();
+        double CalculateMaxFlow(Graph &network);
         void maxFlowCities();
         void citiesInDeficit();
         std::pair<AnaliseResult, AnaliseResult> balanceNetwork();
@@ -57,8 +57,8 @@ class Manager {
 
     private:
         double FarthestAugmentingPath(std::list<Edge*>& biggestPath, Vertex*& last);
-        void EdmondsKarp(Element* source, Element* target, const std::unordered_set<Vertex*>& affected);
-        double EdmondsBFS(Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected);
+        void EdmondsKarp(Graph &network, Element* source, Element* target, const std::unordered_set<Vertex*>& affected);
+        double EdmondsBFS(Graph &network, Vertex* source, Vertex* target, const std::unordered_set<Vertex*>& affected);
         std::tuple<double, double, double> AnalyzeBalance();
 };
 
@@ -71,7 +71,12 @@ inline Manager::~Manager()
 	for (const auto& [code, e] : allElements)
 		delete e;
 	for (auto vtx : network.getVertexSet())
+	{
+		for (auto edg : vtx->getAdj())
+			delete edg;
 		delete vtx;
+	}
+		
 }
 
 #endif //FIRST_PROJECT_DA_MANAGER_H

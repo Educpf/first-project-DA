@@ -101,6 +101,8 @@ public:
 
     int getNumVertex() const;
     std::vector<Vertex *> getVertexSet() const;
+	Graph getCopy();
+	void deleteGraph();
 protected:
     std::vector<Vertex *> vertexSet;
 	std::unordered_map<std::string, Vertex *> vertexMap;
@@ -111,9 +113,24 @@ protected:
     int findVertexIdx(const Element *in) const;
 };
 
-inline void deleteMatrix(int **m, int n);
-inline void deleteMatrix(double **m, int n);
+inline Graph Graph::getCopy()
+{
+	Graph result;
 
+	for (auto i : vertexSet)
+	{
+		result.addVertex(i->getInfo());
+	}
+
+	for (auto i : vertexSet)
+	{
+		for (auto j : i->getAdj())
+		{
+			result.addEdge(i->getInfo(), j->getDest()->getInfo(), j->getWeight());
+		}
+	}
+	return result;
+}
 
 /************************* Vertex  **************************/
 

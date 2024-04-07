@@ -133,7 +133,7 @@ double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath, Vertex*& l
 */
 std::pair<AnaliseResult, AnaliseResult> Manager::balanceNetwork()
 {
-    CalculateMaxFlow();
+    CalculateMaxFlow(network);
     AnaliseResult initial = AnalyzeBalance();
 
     // Clean graph
