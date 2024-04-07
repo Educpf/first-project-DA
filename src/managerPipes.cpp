@@ -128,7 +128,7 @@ double Manager::FarthestAugmentingPath(std::list<Edge*>& biggestPath, Vertex*& l
 
 /**
  * Balances the network in order to reduce the variation of capacity/flow in the graph.
- * @note Complexity: O(E * )
+ * @note Complexity: O(n * V * E^2), n being the number of reservoirs
  * @return Pair of tuples containg stats before and after balancing the network.
 */
 std::pair<AnaliseResult, AnaliseResult> Manager::balanceNetwork()
