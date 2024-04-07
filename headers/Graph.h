@@ -53,8 +53,6 @@ protected:
 
     std::vector<Edge *> incoming;
 
-    int queueIndex = 0;
-
     inline void deleteEdge(Edge *edge);
 };
 
@@ -74,6 +72,7 @@ public:
     inline void setSelected(bool selected);
     inline void setReverse(Edge *reverse);
     inline void setFlow(double flow);
+	
 protected:
 	Vertex *orig;
     Vertex *dest;
