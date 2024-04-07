@@ -49,7 +49,7 @@ void UI::mainMenu()
         CLEAR;
         std::cout 
 		//<< "Flows\n"
-        << "\n"
+        //<< "\n"
 #ifdef _linux__
         << "Welcome " << getenv("USER") << "!\n"
 #else
